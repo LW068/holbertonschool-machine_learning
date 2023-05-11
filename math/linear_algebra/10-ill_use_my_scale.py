@@ -8,6 +8,7 @@ the shape of a numpy.ndarray.
 
 import numpy as np
 
+
 def np_shape(matrix):
     """
     Calculates the shape of a numpy.ndarray.
