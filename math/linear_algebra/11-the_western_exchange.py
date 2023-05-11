@@ -7,6 +7,7 @@ a numpy.ndarray
 
 import numpy as np
 
+
 def np_transpose(matrix):
     """
     Function that transposes a numpy.ndarray
