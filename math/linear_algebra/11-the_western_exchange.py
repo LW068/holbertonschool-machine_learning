@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 """
 This module contains the function np_transpose that transposes
-a numpy.ndarray
+a numpy.ndarray without using any loops or conditional statements.
 """
-
-
-import numpy as np
 
 
 def np_transpose(matrix):
@@ -14,6 +11,6 @@ def np_transpose(matrix):
     Args:
         matrix (numpy.ndarray): The input array.
     Returns:
-        numpy.ndarray: The transposed array.
+        numpy.ndarray: The transposed matrix.
     """
-    return np.transpose(matrix)
+    return matrix.T
