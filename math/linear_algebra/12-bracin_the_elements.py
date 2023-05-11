@@ -5,9 +5,6 @@ addition, subtraction, multiplication, and division of two numpy.ndarrays
 """
 
 
-import numpy as np
-
-
 def np_elementwise(mat1, mat2):
     """
     Function that performs element-wise addition, subtraction,
