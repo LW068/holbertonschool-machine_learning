@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-This module contains a function that concatenates two 
+This module contains a function that concatenates two
 matrices along a specific axis.
 """
 
@@ -17,7 +17,7 @@ def cat_matrices2D(mat1, mat2, axis=0):
             Defaults to 0.
 
     Returns:
-        A new 2D matrix that is the concatenation of 
+        A new 2D matrix that is the concatenation of
         mat1 and mat2 along the specified axis,
         or None if the matrices cannot be concatenated.
     """
