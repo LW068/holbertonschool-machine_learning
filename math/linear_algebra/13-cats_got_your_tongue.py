@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-This module contains the function np_cat that concatenates two matrices along a specific axis.
+This module contains the function np_cat that concatenates
+two matrices along a specific axis.
 """
 
 
