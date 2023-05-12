@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 np.random.seed(5)
-fruit = np.random.randint(0, 20, (4,3))
+fruit = np.random.randint(0, 20, (4, 3))
 
 # Define the color for each type of fruit
 colors = ['red', 'yellow', '#ff8000', '#ffe5b4']
@@ -25,7 +25,8 @@ y_offset = np.zeros(fruit.shape[1])
 
 # Create the bars
 for row in range(fruit.shape[0]):
-    plt.bar(persons, fruit[row], bar_width, bottom=y_offset, color=colors[row], label=labels[row])
+    plt.bar(persons, fruit[row], bar_width, bottom=y_offset,
+            color=colors[row], label=labels[row])
     y_offset += fruit[row]
 
 plt.xlabel('Persons')
