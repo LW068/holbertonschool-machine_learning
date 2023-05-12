@@ -16,7 +16,8 @@ y1 = np.exp((r / t1) * x)
 y2 = np.exp((r / t2) * x)
 
 plt.plot(x, y1, 'r--', label='C-14')  # plot y1 against x as a dashed red line
-plt.plot(x, y2, 'g-', label='Ra-226') # plot y2 against x as a solid green line
+plt.plot(x, y2, 'g-', label='Ra-226')  # plot y2 against x as a -
+# - solid green line
 
 # labels, title and legend
 plt.xlabel('Time (years)')
