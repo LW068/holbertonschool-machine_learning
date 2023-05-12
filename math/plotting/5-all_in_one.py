@@ -60,7 +60,7 @@ plt.ylabel('Fraction Remaining', fontsize='x-small')
 plt.title('Exponential Decay of Radioactive Elements', fontsize='x-small')
 plt.legend()
 
-plt.subplot(325)
+plt.subplot2grid((3,2), (2,0), colspan=2)
 plt.hist(student_grades, bins=range(0, 101, 10), edgecolor='black')
 plt.xlabel('Grades', fontsize='x-small')
 plt.ylabel('Number of Students', fontsize='x-small')
