@@ -3,6 +3,7 @@
 This module contains a function that calculates the integral of a polynomial.
 """
 
+
 def poly_integral(poly, C=0):
     """
     This function calculates the integral of a polynomial.
@@ -27,11 +28,11 @@ def poly_integral(poly, C=0):
             integral.append(poly[i] // (i+1))
         else:
             integral.append(poly[i] / (i+1))
-    
+
     # Remove trailing zeros
     while len(integral) > 1 and integral[-1] == 0:
         integral.pop()
-        
+    
     return integral
 
 
