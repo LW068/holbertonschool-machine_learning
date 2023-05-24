@@ -52,3 +52,15 @@ class Binomial:
             return 1
         else:
             return n * self.factorial(n - 1)
+
+    def cdf(self, k):
+        """
+        Calculates the value of the CDF for a given number of “successes”
+        """
+        k = int(k)
+        if k < 0:
+            return 0
+        cdf = 0
+        for i in range(k + 1):
+            cdf += self.pmf(i)
+        return cdf
