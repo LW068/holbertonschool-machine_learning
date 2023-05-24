@@ -41,7 +41,7 @@ class Poisson:
             for i in range(1, k + 1):
                 k_factorial *= i
             pmf = (lambtha_power_k * e_power_neg_lambtha) / k_factorial
-            return
+            return pmf
 
     def cdf(self, k):
         """
