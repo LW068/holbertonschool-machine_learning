@@ -30,3 +30,24 @@ class Binomial:
             p = 1 - variance / mean
             self.n = round(mean / p)
             self.p = mean / self.n
+
+    def pmf(self, k):
+        """
+        Calculates the value of the PMF for a given number of successes
+        """
+        k = int(k)
+        if k < 0 or k > self.n:
+            return 0
+        else:
+            combinations = self.factorial(self.n) / (self.factorial(k) * self.factorial(self.n - k))
+            pmf = combinations * (self.p ** k) * ((1 - self.p) ** (self.n - k))
+            return pmf
+
+    def factorial(self, n):
+        """
+        Calculates the factorial of a number
+        """
+        if n == 0 or n == 1:
+            return 1
+        else:
+            return n * self.factorial(n - 1)
