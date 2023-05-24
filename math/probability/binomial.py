@@ -3,6 +3,7 @@
 Module for binomial distribution
 """
 
+
 class Binomial:
     """
     Class that represents a binomial distribution
