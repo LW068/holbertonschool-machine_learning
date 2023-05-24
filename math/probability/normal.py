@@ -49,4 +49,3 @@ class Normal:
         coefficient = 1 / (self.stddev * (2 * 3.1415926536) ** 0.5)
         pdf = coefficient * 2.7182818285 ** exponent
         return pdf
-    
