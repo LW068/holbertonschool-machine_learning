@@ -40,7 +40,7 @@ class Binomial:
             return 0
         else:
             combinations = self.factorial(self.n) / (self.factorial(k) *
-                                                    self.factorial(self.n - k))
+                                         self.factorial(self.n - k))
             pmf = combinations * (self.p ** k) * ((1 - self.p) ** (self.n - k))
             return pmf
 
