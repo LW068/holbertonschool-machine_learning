@@ -58,5 +58,6 @@ class Neuron:
         """
         m = Y.shape[1]
         # Compute the cost using logistic regression loss formula
-        cost = -(1 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        log_probs = Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A)
+        cost = -(1 / m) * np.sum(log_probs)
         return cost
