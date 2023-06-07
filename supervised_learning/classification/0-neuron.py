@@ -13,19 +13,19 @@ class Neuron:
     def __init__(self, nx):
         """
         Class constructor
-    
+
         Arguments:
         nx {int} -- number of input features to the neuron
         """
-    
+
         # check if nx is not an integer
         if not isinstance(nx, int):
             raise TypeError('nx must be an integer')
-    
+
         # check if nx is less than 1
         if nx < 1:
             raise ValueError('nx must be a positive integer')
-    
+
         # weights vector f0r the neuron using random normal distribution
         self.W = np.random.randn(1, nx)
         # bias f0r the neuron initialized to 0
