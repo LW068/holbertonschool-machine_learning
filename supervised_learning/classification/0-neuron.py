@@ -28,7 +28,7 @@ class Neuron:
         
         # weights vector f0r the neuron using random normal distribution
         self.W = np.random.randn(1, nx)
-        # bias for the neuron initialized to 0
+        # bias f0r the neuron initialized to 0
         self.b = 0
         # activated output of the neuron initialized to 0
         self.A = 0
