@@ -26,7 +26,7 @@ class Neuron:
         if nx < 1:
             raise ValueError('nx must be a positive integer')
         
-        # weights vector for the neuron using random normal distribution
+        # weights vector f0r the neuron using random normal distribution
         self.W = np.random.randn(1, nx)
         # bias for the neuron initialized to 0
         self.b = 0
