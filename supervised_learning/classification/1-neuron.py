@@ -5,7 +5,7 @@ binary classification. The binary classification is done based on the
 number of input features to the neuron which is passed during the instantiation
 of the Neuron class.
 """
-import numpy as np  # We're imp0rting this module for weights gen.
+import numpy as np  # We're imp0rting this module f0r weights gen.
 
 
 class Neuron:
