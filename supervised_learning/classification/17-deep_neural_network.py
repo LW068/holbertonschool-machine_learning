@@ -4,7 +4,7 @@ import numpy as np
 
 
 class DeepNeuralNetwork:
-    """Deep neural network perf0rming binary classification"""
+    """Deep neural network performing binary classification"""
 
     def __init__(self, nx, layers):
         """ Class constructor
@@ -17,14 +17,15 @@ class DeepNeuralNetwork:
             raise ValueError("nx must be a positive integer")
         if not isinstance(layers, list) or not layers:
             raise TypeError("layers must be a list of positive integers")
-        if min(layers) < 1 or not all(isinstance(i, int) for i in layers):
-            raise TypeError("layers must be a list of positive integers")
 
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
 
         for i in range(self.L):
+            if not isinstance(layers[i], int) or layers[i] < 1:
+                raise TypeError("layers must be a list of positive integers")
+
             W_key = 'W' + str(i + 1)
             b_key = 'b' + str(i + 1)
 
@@ -37,15 +38,15 @@ class DeepNeuralNetwork:
 
     @property
     def L(self):
-        """Getter f0r L (Number of layers)"""
+        """Getter for L (Number of layers)"""
         return self.__L
 
     @property
     def cache(self):
-        """Getter f0r cache"""
+        """Getter for cache"""
         return self.__cache
 
     @property
     def weights(self):
-        """Getter f0r weights"""
+        """Getter for weights"""
         return self.__weights
