@@ -108,4 +108,14 @@ class Neuron:
             if verbose and i % step == 0:
                 cost = self.cost(Y, A)
                 print("Cost after {} iterations: {}".format(i, cost))
-                costs.append(cost
+                costs.append(cost)
+                iters.append(i)
+
+        if graph:
+            plt.plot(iters, costs, 'b')
+            plt.xlabel('iteration')
+            plt.ylabel('cost')
+            plt.title('Training Cost')
+            plt.show()
+
+        return self.evaluate(X, Y)
