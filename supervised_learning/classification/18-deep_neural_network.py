@@ -19,19 +19,20 @@ class DeepNeuralNetwork:
             raise ValueError("nx must be a positive integer")
         if type(layers) is not list or not layers:
             raise TypeError("layers must be a list of positive integers")
-        for i in layers:
-            if type(i) is not int or i <= 0:
-                raise TypeError("layers must be a list of positive integers")
+        if not all(map(lambda x: x > 0 and isinstance(x, int), layers)):
+            raise TypeError("layers must be a list of positive integers")
 
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
-        layer_sizes = [nx] + layers
-        for i in range(1, len(layer_sizes)):
-            self.__weights["W" + str(i)] = (np.random.randn(layer_sizes[i],
-                                                    layer_sizes[i - 1])
-                                            * np.sqrt(2 / layer_sizes[i - 1]))
-            self.__weights["b" + str(i)] = np.zeros((layer_sizes[i], 1))
+        layer_sizes = np.concatenate(([nx], layers))
+        Ws = ("W" + str(i+1) for i in range(self.__L))
+        bs = ("b" + str(i+1) for i in range(self.__L))
+
+        for W, b, l in zip(Ws, bs, range(1, self.__L+1)):
+            self.__weights[W] = np.random.randn(layer_sizes[l],
+                                                layer_sizes[l-1]) * np.sqrt(2 / layer_sizes[l-1])
+            self.__weights[b] = np.zeros((layer_sizes[l], 1))
 
     def forward_prop(self, X):
         """Performs forward propagation for a deep neural network."""
@@ -42,6 +43,12 @@ class DeepNeuralNetwork:
                  + self.__weights["b" + str(i)])
             self.__cache["A" + str(i)] = 1 / (1 + np.exp(-Z))
         return self.__cache["A" + str(self.__L)], self.__cache
+
+    def cost(self, Y, A):
+        """Calculates the cost of the model using logistic regression."""
+        m = Y.shape[1]
+        cost = (-1 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        return cost
 
     @property
     def cache(self):
