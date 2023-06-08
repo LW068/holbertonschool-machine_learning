@@ -26,22 +26,22 @@ class DeepNeuralNetwork:
         self.__cache = {}
         self.__weights = {}
         layer_sizes = np.concatenate(([nx], layers))
+        Ws = (f"W{i+1}" for i in range(self.__L))
+        bs = (f"b{i+1}" for i in range(self.__L))
 
-        for l in range(1, self.__L + 1):
-            self.__weights["W" + str(l)] = np.random.randn(layer_sizes[l],
-                                                           layer_sizes[l-1]) * np.sqrt(2 / layer_sizes[l-1])
-            self.__weights["b" + str(l)] = np.zeros((layer_sizes[l], 1))
+        for W, b, l in zip(Ws, bs, range(1, self.__L+1)):
+            self.__weights[W] = np.random.randn(layer_sizes[l], layer_sizes[l-1]) * np.sqrt(2 / layer_sizes[l-1])
+            self.__weights[b] = np.zeros((layer_sizes[l], 1))
 
     def forward_prop(self, X):
         """Performs forward propagation for a deep neural network."""
         self.__cache["A0"] = X
-        A_prev = X
-        for l in range(1, self.__L + 1):
-            A = 1 / (1 + np.exp(-(np.matmul(self.__weights["W" + str(l)], A_prev) +
-                                  self.__weights["b" + str(l)])))
-            self.__cache["A" + str(l)] = A
-            A_prev = A
-        return A, self.__cache
+        for i in range(1, self.__L + 1):
+            W = self.__weights[f"W{i}"]
+            b = self.__weights[f"b{i}"]
+            Z = np.matmul(W, self.__cache[f"A{i-1}"]) + b
+            self.__cache[f"A{i}"] = 1 / (1 + np.exp(-Z))
+        return self.__cache[f"A{self.__L}"], self.__cache
 
     def cost(self, Y, A):
         """Calculates the cost of the model using logistic regression."""
