@@ -28,8 +28,10 @@ class DeepNeuralNetwork:
         layer_sizes = np.concatenate(([nx], layers))
 
         for l in range(1, self.__L + 1):
-            self.__weights["W" + str(l)] = np.random.randn(layer_sizes[l],
-                                                           layer_sizes[l-1]) * np.sqrt(2 / layer_sizes[l-1])
+            self.__weights["W" + str(l)] = (
+                np.random.randn(layer_sizes[l], layer_sizes[l - 1]) *
+                np.sqrt(2 / layer_sizes[l - 1])
+            )
             self.__weights["b" + str(l)] = np.zeros((layer_sizes[l], 1))
 
     def forward_prop(self, X):
@@ -37,16 +39,19 @@ class DeepNeuralNetwork:
         self.__cache["A0"] = X
         A_prev = X
         for l in range(1, self.__L + 1):
-            A = 1 / (1 + np.exp(-(np.matmul(self.__weights["W" + str(l)], A_prev) +
-                                  self.__weights["b" + str(l)])))
+            A = 1 / (1 + np.exp(-(
+                np.matmul(self.__weights["W" + str(l)], A_prev) +
+                self.__weights["b" + str(l)]
+            )))
             self.__cache["A" + str(l)] = A
             A_prev = A
         return A, self.__cache
 
     def cost(self, Y, A):
-        """Calculates the cost of the model using logistic regression."""
         m = Y.shape[1]
-        cost = (-1 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        cost = (
+            -1 / m * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        )
         return cost
 
     @property
