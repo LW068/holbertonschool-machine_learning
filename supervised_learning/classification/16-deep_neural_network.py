@@ -29,9 +29,9 @@ class DeepNeuralNetwork:
             if i == 0:
                 W_value = np.random.randn(layers[i], nx) * np.sqrt(2 / nx)
             else:
-                W_value = np.random.randn(layers[i], layers[i - 1]) 
+                W_value = np.random.randn(layers[i], layers[i - 1])
                 W_value *= np.sqrt(2 / layers[i - 1])
-    
+
             self.weights[W_key] = W_value
             self.weights[b_key] = np.zeros((layers[i], 1))
 
