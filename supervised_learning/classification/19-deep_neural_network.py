@@ -32,19 +32,13 @@ class DeepNeuralNetwork:
                                                            layer_sizes[l-1]) * np.sqrt(2 / layer_sizes[l-1])
             self.__weights["b" + str(l)] = np.zeros((layer_sizes[l], 1))
 
-        self.__cache["A0"] = np.zeros((nx, 1))
-        for i in range(1, self.__L + 1):
-            self.__cache["A" + str(i)] = np.zeros((layers[i-1], 1))
-
     def forward_prop(self, X):
         """Performs forward propagation for a deep neural network."""
         self.__cache["A0"] = X
         A_prev = X
         for l in range(1, self.__L + 1):
-            W = self.__weights["W" + str(l)]
-            b = self.__weights["b" + str(l)]
-            Z = np.matmul(W, A_prev) + b
-            A = 1 / (1 + np.exp(-Z))
+            A = 1 / (1 + np.exp(-(np.matmul(self.__weights["W" + str(l)], A_prev) +
+                                  self.__weights["b" + str(l)])))
             self.__cache["A" + str(l)] = A
             A_prev = A
         return A, self.__cache
