@@ -26,11 +26,11 @@ class DeepNeuralNetwork:
         self.__cache = {}
         self.__weights = {}
         layer_sizes = np.concatenate(([nx], layers))
-        Ws = (f"W{i+1}" for i in range(self.__L))
-        bs = (f"b{i+1}" for i in range(self.__L))
+        Ws = ("W" + str(i + 1) for i in range(self.__L))
+        bs = ("b" + str(i + 1) for i in range(self.__L))
 
         for W, b, l in zip(Ws, bs, range(1, self.__L + 1)):
-            self.__weights[W] = np.random.randn(layer_sizes[l], layer_sizes[l-1]) * np.sqrt(2 / layer_sizes[l-1])
+            self.__weights[W] = np.random.randn(layer_sizes[l], layer_sizes[l - 1]) * np.sqrt(2 / layer_sizes[l - 1])
             self.__weights[b] = np.zeros((layer_sizes[l], 1))
 
     def forward_prop(self, X):
@@ -38,18 +38,13 @@ class DeepNeuralNetwork:
         self.__cache["A0"] = X
         A = X
         for i in range(1, self.__L + 1):
-            W = self.__weights[f"W{i}"]
-            b = self.__weights[f"b{i}"]
-            Z = np.matmul(W, A) + b
+            W = self.__weights["W" + str(i)]
+            b = self.__weights["b" + str(i)]
+            A_prev = self.__cache["A" + str(i - 1)]
+            Z = np.dot(W, A_prev) + b
             A = 1 / (1 + np.exp(-Z))
-            self.__cache[f"A{i}"] = A
+            self.__cache["A" + str(i)] = A
         return A, self.__cache
-
-    def cost(self, Y, A):
-        """Calculates the cost of the model using logistic regression."""
-        m = Y.shape[1]
-        cost = (-1 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
-        return cost
 
     def evaluate(self, X, Y):
         """Evaluates the neural network's predictions."""
@@ -57,6 +52,12 @@ class DeepNeuralNetwork:
         prediction = np.where(A >= 0.5, 1, 0)
         cost = self.cost(Y, A)
         return prediction, cost
+
+    def cost(self, Y, A):
+        """Calculates the cost of the model using logistic regression."""
+        m = Y.shape[1]
+        cost = (-1 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        return cost
 
     @property
     def cache(self):
