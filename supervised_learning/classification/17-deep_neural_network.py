@@ -7,9 +7,10 @@ class DeepNeuralNetwork:
     """Deep neural network performing binary classification"""
 
     def __init__(self, nx, layers):
-        """ Class constructor
-        nx is the number of input features
-        layers is a list representing the number of nodes in each layer of the network
+        """
+        Class constructor
+        nx: number of input features
+        layers: number of nodes in each layer of the network
         """
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
@@ -30,9 +31,11 @@ class DeepNeuralNetwork:
             b_key = 'b' + str(i + 1)
 
             if i == 0:
-                self.__weights[W_key] = np.random.randn(layers[i], nx) * np.sqrt(2 / nx)
+                self.__weights[W_key] = np.random.randn(layers[i], nx)
+                self.__weights[W_key] *= np.sqrt(2 / nx)
             else:
-                self.__weights[W_key] = np.random.randn(layers[i], layers[i - 1]) * np.sqrt(2 / layers[i - 1])
+                self.__weights[W_key] = np.random.randn(layers[i], layers[i - 1])
+                self.__weights[W_key] *= np.sqrt(2 / layers[i - 1])
 
             self.__weights[b_key] = np.zeros((layers[i], 1))
 
