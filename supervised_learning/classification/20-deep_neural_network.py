@@ -99,3 +99,4 @@ class DeepNeuralNetwork:
         """
         A, _ = self.forward_prop(X)
         return np.where(A <= 0.5, 0, 1), self.cost(Y, A)
+    
