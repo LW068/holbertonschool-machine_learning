@@ -19,39 +19,29 @@ class DeepNeuralNetwork:
             raise ValueError("nx must be a positive integer")
         if type(layers) is not list or not layers:
             raise TypeError("layers must be a list of positive integers")
-        if not all(isinstance(x, int) and x > 0 for x in layers):
+        if not all(map(lambda x: x > 0 and isinstance(x, int), layers)):
             raise TypeError("layers must be a list of positive integers")
 
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
         layer_sizes = np.concatenate(([nx], layers))
-        Ws = ("W" + str(i + 1) for i in range(self.__L))
-        bs = ("b" + str(i + 1) for i in range(self.__L))
 
-        for W, b, l in zip(Ws, bs, range(1, self.__L + 1)):
-            self.__weights[W] = np.random.randn(layer_sizes[l], layer_sizes[l - 1]) * np.sqrt(2 / layer_sizes[l - 1])
-            self.__weights[b] = np.zeros((layer_sizes[l], 1))
+        for l in range(1, self.__L + 1):
+            self.__weights["W" + str(l)] = np.random.randn(layer_sizes[l],
+                                                           layer_sizes[l-1]) * np.sqrt(2 / layer_sizes[l-1])
+            self.__weights["b" + str(l)] = np.zeros((layer_sizes[l], 1))
 
     def forward_prop(self, X):
         """Performs forward propagation for a deep neural network."""
         self.__cache["A0"] = X
-        A = X
-        for i in range(1, self.__L + 1):
-            W = self.__weights["W" + str(i)]
-            b = self.__weights["b" + str(i)]
-            A_prev = self.__cache["A" + str(i - 1)]
-            Z = np.dot(W, A_prev) + b
-            A = 1 / (1 + np.exp(-Z))
-            self.__cache["A" + str(i)] = A
+        A_prev = X
+        for l in range(1, self.__L + 1):
+            A = 1 / (1 + np.exp(-(np.matmul(self.__weights["W" + str(l)], A_prev) +
+                                  self.__weights["b" + str(l)])))
+            self.__cache["A" + str(l)] = A
+            A_prev = A
         return A, self.__cache
-
-    def evaluate(self, X, Y):
-        """Evaluates the neural network's predictions."""
-        A, _ = self.forward_prop(X)
-        prediction = np.where(A >= 0.5, 1, 0)
-        cost = self.cost(Y, A)
-        return prediction, cost
 
     def cost(self, Y, A):
         """Calculates the cost of the model using logistic regression."""
