@@ -19,7 +19,7 @@ class DeepNeuralNetwork:
             raise ValueError("nx must be a positive integer")
         if type(layers) is not list or not layers:
             raise TypeError("layers must be a list of positive integers")
-        if not all(map(lambda x: x > 0 and isinstance(x, int), layers)):
+        if not all(isinstance(x, int) and x > 0 for x in layers):
             raise TypeError("layers must be a list of positive integers")
 
         self.__L = len(layers)
@@ -29,19 +29,21 @@ class DeepNeuralNetwork:
         Ws = (f"W{i+1}" for i in range(self.__L))
         bs = (f"b{i+1}" for i in range(self.__L))
 
-        for W, b, l in zip(Ws, bs, range(1, self.__L+1)):
+        for W, b, l in zip(Ws, bs, range(1, self.__L + 1)):
             self.__weights[W] = np.random.randn(layer_sizes[l], layer_sizes[l-1]) * np.sqrt(2 / layer_sizes[l-1])
             self.__weights[b] = np.zeros((layer_sizes[l], 1))
 
     def forward_prop(self, X):
         """Performs forward propagation for a deep neural network."""
         self.__cache["A0"] = X
+        A = X
         for i in range(1, self.__L + 1):
             W = self.__weights[f"W{i}"]
             b = self.__weights[f"b{i}"]
-            Z = np.matmul(W, self.__cache[f"A{i-1}"]) + b
-            self.__cache[f"A{i}"] = 1 / (1 + np.exp(-Z))
-        return self.__cache[f"A{self.__L}"], self.__cache
+            Z = np.matmul(W, A) + b
+            A = 1 / (1 + np.exp(-Z))
+            self.__cache[f"A{i}"] = A
+        return A, self.__cache
 
     def cost(self, Y, A):
         """Calculates the cost of the model using logistic regression."""
