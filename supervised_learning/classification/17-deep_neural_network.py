@@ -34,7 +34,8 @@ class DeepNeuralNetwork:
                 self.__weights[W_key] = np.random.randn(layers[i], nx)
                 self.__weights[W_key] *= np.sqrt(2 / nx)
             else:
-                self.__weights[W_key] = np.random.randn(layers[i], layers[i - 1])
+                W_shape = (layers[i], layers[i - 1])
+                self.__weights[W_key] = np.random.randn(*W_shape)
                 self.__weights[W_key] *= np.sqrt(2 / layers[i - 1])
 
             self.__weights[b_key] = np.zeros((layers[i], 1))
