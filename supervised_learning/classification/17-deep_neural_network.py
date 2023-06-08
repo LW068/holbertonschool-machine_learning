@@ -4,7 +4,7 @@ import numpy as np
 
 
 class DeepNeuralNetwork:
-    """Deep neural network performing binary classification"""
+    """Deep neural network perf0rming binary classification"""
 
     def __init__(self, nx, layers):
         """ Class constructor
@@ -37,15 +37,15 @@ class DeepNeuralNetwork:
 
     @property
     def L(self):
-        """Getter for L (Number of layers)"""
+        """Getter f0r L (Number of layers)"""
         return self.__L
 
     @property
     def cache(self):
-        """Getter for cache"""
+        """Getter f0r cache"""
         return self.__cache
 
     @property
     def weights(self):
-        """Getter for weights"""
+        """Getter f0r weights"""
         return self.__weights
