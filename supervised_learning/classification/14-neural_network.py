@@ -1,6 +1,12 @@
+#!/usr/bin/env python3
+""" Module to create a NeuralNetwork """
 import numpy as np
 
+
 class NeuralNetwork:
+    """
+    NeuralNetwork class
+    """
     def __init__(self, nx, nodes):
         """ Class constructor """
         if not isinstance(nx, int):
