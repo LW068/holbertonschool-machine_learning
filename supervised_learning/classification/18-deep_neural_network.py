@@ -8,65 +8,82 @@ import numpy as np
 
 
 class DeepNeuralNetwork:
-    """Class that defines a deep neural network performing binary
-    classification.
     """
+    Class that defines a deep neural network performing binary classification
+    """
+
     def __init__(self, nx, layers):
-        """Initialize all the variables."""
+        """
+        Initializes the DeepNeuralNetwork object
+        Args:
+            nx (int): Number of input features
+            layers (list): List representing the number of nodes in each layer
+        Raises:
+            TypeError: If nx is not an integer or if layers is not a list
+            ValueError: If nx or any element in layers is not a positive integer
+        """
         if type(nx) is not int:
             raise TypeError("nx must be an integer")
         if nx < 1:
             raise ValueError("nx must be a positive integer")
         if type(layers) is not list or not layers:
             raise TypeError("layers must be a list of positive integers")
-        if not all(map(lambda x: x > 0 and isinstance(x, int), layers)):
+        if not all(isinstance(x, int) and x > 0 for x in layers):
             raise TypeError("layers must be a list of positive integers")
 
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
         layer_sizes = np.concatenate(([nx], layers))
-        Ws = ("W" + str(i+1) for i in range(self.__L))
-        bs = ("b" + str(i+1) for i in range(self.__L))
 
-        for W, b, l in zip(Ws, bs, range(1, self.__L+1)):
-            self.__weights[W] = np.random.randn(layer_sizes[l],
-                                                layer_sizes[l-1]) * np.sqrt(2 / layer_sizes[l-1])
-            self.__weights[b] = np.zeros((layer_sizes[l], 1))
-
-        self.__cache["A0"] = np.zeros((nx, 1))
-        for i in range(1, self.__L + 1):
-            self.__cache["A" + str(i)] = np.zeros((layers[i-1], 1))
-
-    def forward_prop(self, X):
-        """Performs forward propagation for a deep neural network."""
-        self.__cache["A0"] = X
-        A = X
-        for i in range(1, self.__L + 1):
-            W = self.__weights["W" + str(i)]
-            b = self.__weights["b" + str(i)]
-            Z = np.matmul(W, A) + b
-            A = 1 / (1 + np.exp(-Z))
-            self.__cache["A" + str(i)] = A
-        return A, self.__cache
-
-    def cost(self, Y, A):
-        """Calculates the cost of the model using logistic regression."""
-        m = Y.shape[1]
-        cost = (-1 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
-        return cost
-
-    @property
-    def cache(self):
-        """Getter for cache attribute."""
-        return self.__cache
+        for l in range(1, self.__L + 1):
+            self.__weights["W" + str(l)] = np.random.randn(layer_sizes[l],
+                                                           layer_sizes[l - 1]) * np.sqrt(2 / layer_sizes[l - 1])
+            self.__weights["b" + str(l)] = np.zeros((layer_sizes[l], 1))
 
     @property
     def L(self):
-        """Getter for L attribute."""
+        """
+        Getter method for __L
+        Returns:
+            int: Number of layers in the neural network
+        """
         return self.__L
 
     @property
+    def cache(self):
+        """
+        Getter method for __cache
+        Returns:
+            dict: A dictionary representing the cache of the neural network
+        """
+        return self.__cache
+
+    @property
     def weights(self):
-        """Getter for weights attribute."""
+        """
+        Getter method for __weights
+        Returns:
+            dict: A dictionary representing the weights and biases of the neural network
+        """
         return self.__weights
+
+    def forward_prop(self, X):
+        """
+        Calculates the forward propagation of the neural network
+        Args:
+            X (numpy.ndarray): Input data with shape (nx, m)
+                               where nx is the number of input features
+                               and m is the number of examples
+        Returns:
+            tuple: Output of the neural network and cache, respectively
+        """
+        self.__cache["A0"] = X
+        A = X
+        for l in range(1, self.__L + 1):
+            W = self.__weights["W" + str(l)]
+            b = self.__weights["b" + str(l)]
+            Z = np.matmul(W, A) + b
+            A = 1 / (1 + np.exp(-Z))
+            self.__cache["A" + str(l)] = A
+        return A, self.__cache
