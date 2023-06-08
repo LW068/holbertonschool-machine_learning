@@ -28,11 +28,11 @@ class DeepNeuralNetwork:
         layer_sizes = np.concatenate(([nx], layers))
 
         for l in range(1, self.__L + 1):
-        self.__weights["W" + str(l)] = (
-            np.random.randn(layer_sizes[l], layer_sizes[l - 1]) *
-            np.sqrt(2 / layer_sizes[l - 1])
-        )
-        self.__weights["b" + str(l)] = np.zeros((layer_sizes[l], 1))
+            self.__weights["W" + str(l)] = (
+                np.random.randn(layer_sizes[l], layer_sizes[l - 1]) *
+                np.sqrt(2 / layer_sizes[l - 1])
+            )
+            self.__weights["b" + str(l)] = np.zeros((layer_sizes[l], 1))
 
     def forward_prop(self, X):
         """Performs forward propagation for a deep neural network."""
