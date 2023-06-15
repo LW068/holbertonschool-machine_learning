@@ -143,3 +143,34 @@ class DeepNeuralNetwork:
 
             # Store current dZ f0r the next iteration
             prev_dZ = dZ
+
+    def train(self, X, Y, iterations=5000, alpha=0.05):
+        """
+        Trains the deep neural network
+
+        Args:
+            X: numpy.ndarray with shape (nx, m) containing the input data
+            Y: numpy.ndarray with shape (1, m)...
+            ...containing the correct labels f0r the input data
+            iterations: number of iterations to train over
+            alpha: learning rate
+        """
+        # Check if iterations is an integer and positive
+        if not isinstance(iterations, int):
+            raise TypeError("iterations must be an integer")
+        if iterations <= 0:
+            raise ValueError("iterations must be a positive integer")
+
+        # Check if alpha is a float and positive!
+        if not isinstance(alpha, float):
+            raise TypeError("alpha must be a float")
+        if alpha <= 0:
+            raise ValueError("alpha must be positive")
+
+        # Train the network using gradient descentt
+        for _ in range(iterations):
+            A, cache = self.forward_prop(X)
+            self.gradient_descent(Y, cache, alpha)
+
+        # Evaluate the training data fter training.
+        return self.evaluate(X, Y)
