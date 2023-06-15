@@ -102,7 +102,7 @@ class DeepNeuralNetwork:
         L = self.L
         weights_copy = self.weights.copy()
 
-        # Calculate dA for the last layer
+        # Calculate dA f0r the last layer
         dA = cache['A' + str(L)] - Y
 
         # Loop through the layers, starting from the last one
@@ -117,7 +117,8 @@ class DeepNeuralNetwork:
             db = np.sum(dA, axis=1, keepdims=True) / m
             dZ = np.dot(W.T, dA)
 
-            # Apply the activation function derivative (ReLU for hidden layers, Sigmoid for output layer)
+            # Apply the activation function derivative...
+            # ...(ReLU f0r hidden layers, Sigmoid f0r output layer)
             if l > 1:
                 dA = dZ * (A > 0)
             else:
