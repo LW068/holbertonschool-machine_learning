@@ -104,18 +104,15 @@ class DeepNeuralNetwork:
             W = weights_copy['W' + str(l)]
             b = weights_copy['b' + str(l)]
 
-            # Calculate Z from A
-            Z = np.where(cache['A' + str(l)] >= 0.5, 1, 0)
-
-            # Calculate gradients
-            dW = np.dot(dA, A_prev.T) / m
-            db = np.sum(dA, axis=1, keepdims=True) / m
-
             # Update dA f0r the next iteration
             if l == L:
                 dZ = dA
             else:
                 dZ = np.dot(W.T, dA) * (A_prev > 0)
+
+            # Calculate gradients
+            dW = np.dot(dZ, A_prev.T) / m
+            db = np.sum(dZ, axis=1, keepdims=True) / m
 
             # Update weights and biases
             self.weights['W' + str(l)] = W - alpha * dW
@@ -123,3 +120,4 @@ class DeepNeuralNetwork:
 
             # Update dA f0r the next iteration
             dA = dZ
+
