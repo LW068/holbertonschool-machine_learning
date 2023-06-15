@@ -90,14 +90,20 @@ class DeepNeuralNetwork:
         )  # Apply the threshold to get the predicted labels
         return prediction, cost
 
-    def update_weights(self, Y_true, cached_values, learning_rate=0.05):
-        """Perf0rms one iteration of gradient descent to update weights and biases"""
+    def gradient_descent(self, Y, cache, alpha=0.05):
+        """
+        Calculates one pass of gradient descent on the deep neural network
 
+        Args:
+            Y: contains the correct labels for the input data
+            cache: all intermediary values of the network
+            alpha: learning rate
+        """
         # Reverse the order of layers
         layers = range(self.__L, 0, -1)
 
         # Number of samples in the dataset
-        num_samples = Y_true.shape[1]
+        num_samples = Y.shape[1]
 
         # Initialize variables f0r previous dZ
         prev_dZ = None
@@ -108,8 +114,8 @@ class DeepNeuralNetwork:
         # Loop through the layers in reverse order
         for layer in layers:
             # Retrieve cached values f0r the current layer
-            A_current = cached_values.get('A' + str(layer))
-            A_prev = cached_values.get('A' + str(layer - 1))
+            A_current = cache.get('A' + str(layer))
+            A_prev = cache.get('A' + str(layer - 1))
 
             # Retrieve weights and biases f0r the current layer
             weight_current = current_weights.get('W' + str(layer))
@@ -118,7 +124,7 @@ class DeepNeuralNetwork:
 
             # Compute dZ f0r the output layer
             if layer == self.__L:
-                dZ = A_current - Y_true
+                dZ = A_current - Y
             # Compute dZ f0r the hidden layers
             else:
                 dZ = np.matmul(weight_next.T, prev_dZ) * (A_current * (1 - A_current))
@@ -128,8 +134,8 @@ class DeepNeuralNetwork:
             dB = np.sum(dZ, axis=1, keepdims=True) / num_samples
 
             # Update weights and biases
-            self.__weights['W' + str(layer)] = weight_current - (dW * learning_rate)
-            self.__weights['b' + str(layer)] = bias_current - (dB * learning_rate)
+            self.__weights['W' + str(layer)] = weight_current - (dW * alpha)
+            self.__weights['b' + str(layer)] = bias_current - (dB * alpha)
 
             # Store current dZ f0r the next iteration
             prev_dZ = dZ
