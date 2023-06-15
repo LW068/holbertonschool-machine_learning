@@ -127,7 +127,11 @@ class DeepNeuralNetwork:
                 dZ = A_current - Y
             # Compute dZ f0r the hidden layers
             else:
-                dZ = np.matmul(weight_next.T, prev_dZ) * (A_current * (1 - A_current))
+                # Calculate the element-wise product
+                elementwise_product = A_current * (1 - A_current)
+
+                # Compute dZ f0r the hidden layers
+                dZ = np.matmul(weight_next.T, prev_dZ) * elementwise_product
 
             # Calculate gradients f0r weights and biases
             dW = np.matmul(dZ, A_prev.T) / num_samples
