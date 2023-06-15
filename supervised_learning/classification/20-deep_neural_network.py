@@ -78,10 +78,14 @@ class DeepNeuralNetwork:
         X: numpy.ndarray with shape (nx, m) containing the input data
         nx: number of input features to the neuron
         m: number of examples
-        Y: numpy.ndarray with shape (1, m) containing the correct labels for the input data
-        Returns the neuron's prediction and the cost of the network, respectively
+        Y: numpy.ndarray with shape (1, m)...
+        ...containing the correct labels for the input data
+        Returns the neuron's prediction and the cost of...
+        ...the network, respectively
         """
         A, _ = self.forward_prop(X)  # Get the output of the network
         cost = self.cost(Y, A)  # Calculate the cost
-        prediction = np.where(A >= 0.5, 1, 0)  # Apply the threshold to get the predicted labels
+        prediction = np.where(
+            A >= 0.5, 1, 0
+        )  # Apply the threshold to get the predicted labels
         return prediction, cost
