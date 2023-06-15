@@ -79,7 +79,7 @@ class DeepNeuralNetwork:
         nx: number of input features to the neuron
         m: number of examples
         Y: numpy.ndarray with shape (1, m)...
-        ...containing the correct labels for the input data
+        ...containing the correct labels f0r the input data
         Returns the neuron's prediction and the cost of...
         ...the network, respectively
         """
@@ -110,15 +110,16 @@ class DeepNeuralNetwork:
             # Calculate gradients
             dW = np.dot(dA, A_prev.T) / m
             db = np.sum(dA, axis=1, keepdims=True) / m
-            dZ = np.dot(W.T, dA)
 
-            # Apply the activation function derivative
-            # (ReLU f0r hidden layers, Sigmoid f0r output layer)
-            if l > 1:
-                dA = dZ * (A_prev > 0)
+            # Update dA f0r the next iteration
+            if l == L:
+                dZ = dA
             else:
-                dA = dZ
+                dZ = np.dot(W.T, dA) * (A_prev > 0)
 
             # Update weights and biases
             self.weights['W' + str(l)] = W - alpha * dW
             self.weights['b' + str(l)] = b - alpha * db
+
+            # Update dA f0r the next iteration
+            dA = dZ
