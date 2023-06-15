@@ -91,33 +91,38 @@ class DeepNeuralNetwork:
         return prediction, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
+        """
+        Calculates one pass of gradient descent on the neural network
+        Y: numpy.ndarray with shape (1, m) containing the correct labels for the input data
+        cache: dictionary containing all the intermediary values of the network
+        alpha: learning rate
+        Updates the private attribute __weights
+        """
         m = Y.shape[1]
         L = self.L
         weights_copy = self.weights.copy()
 
-        # Calculate dA f0r the last layer
+        # Calculate dA for the last layer
         dA = cache['A' + str(L)] - Y
 
         # Loop through the layers, starting from the last one
         for l in reversed(range(1, L + 1)):
-            A_prev = cache['A' + str(l - 1)]
+            A = cache['A' + str(l - 1)]
             W = weights_copy['W' + str(l)]
             b = weights_copy['b' + str(l)]
-
-            # Update dA f0r the next iteration
-            if l == L:
-                dZ = dA
-            else:
-                dZ = np.dot(W.T, dA) * (A_prev > 0)
+            Z = cache['Z' + str(l)]
 
             # Calculate gradients
-            dW = np.dot(dZ, A_prev.T) / m
-            db = np.sum(dZ, axis=1, keepdims=True) / m
+            dW = np.dot(dA, A.T) / m
+            db = np.sum(dA, axis=1, keepdims=True) / m
+            dZ = np.dot(W.T, dA)
+
+            # Apply the activation function derivative (ReLU for hidden layers, Sigmoid for output layer)
+            if l > 1:
+                dA = dZ * (A > 0)
+            else:
+                dA = dZ
 
             # Update weights and biases
             self.weights['W' + str(l)] = W - alpha * dW
             self.weights['b' + str(l)] = b - alpha * db
-
-            # Update dA f0r the next iteration
-            dA = dZ
-
