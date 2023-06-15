@@ -91,39 +91,24 @@ class DeepNeuralNetwork:
         return prediction, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """
-        Calculates one pass of gradient descent on the neural network
-        Y: numpy.ndarray with shape (1, m) containing the correct labels for the input data
-        cache: dictionary containing all the intermediary values of the network
-        alpha: learning rate
-        Updates the private attribute __weights
-        """
+        """Calculates one pass of gradient descent on the deep neural network."""
+        n_layers = range(self.__L, 0, -1)
         m = Y.shape[1]
-        L = self.L
-        weights_copy = self.weights.copy()
+        dZ_prev = 0
+        weights = self.__weights.copy()
 
-        # Calculate dA f0r the last layer
-        dA = cache['A' + str(L)] - Y
-
-        # Loop through the layers, starting from the last one
-        for l in reversed(range(1, L + 1)):
-            A = cache['A' + str(l - 1)]
-            W = weights_copy['W' + str(l)]
-            b = weights_copy['b' + str(l)]
-            Z = cache['Z' + str(l)]
-
-            # Calculate gradients
-            dW = np.dot(dA, A.T) / m
-            db = np.sum(dA, axis=1, keepdims=True) / m
-            dZ = np.dot(W.T, dA)
-
-            # Apply the activation function derivative...
-            # ...(ReLU f0r hidden layers, Sigmoid f0r output layer)
-            if l > 1:
-                dA = dZ * (A > 0)
+        for i in n_layers:
+            A = cache.get('A' + str(i))
+            A_prev = cache.get('A' + str(i - 1))
+            weights_i = weights.get('W' + str(i))
+            weights_n = weights.get('W' + str(i + 1))
+            biases = weights.get('b' + str(i))
+            if i == self.__L:
+                dZ = A - Y
             else:
-                dA = dZ
-
-            # Update weights and biases
-            self.weights['W' + str(l)] = W - alpha * dW
-            self.weights['b' + str(l)] = b - alpha * db
+                dZ = np.matmul(weights_n.T, dZ_prev) * (A * (1 - A))
+            dW = np.matmul(dZ, A_prev.T) / m
+            db = np.sum(dZ, axis=1, keepdims=True) / m
+            self.__weights['W' + str(i)] = weights_i - (dW * alpha)
+            self.__weights['b' + str(i)] = biases - (db * alpha)
+            dZ_prev = dZ
