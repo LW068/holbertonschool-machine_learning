@@ -93,7 +93,7 @@ class DeepNeuralNetwork:
     def gradient_descent(self, Y, cache, alpha=0.05):
         """
         Calculates one pass of gradient descent on the neural network
-        Y: numpy.ndarray with shape (1, m) containing the correct labels for the input data
+        Y: numpy.ndarray with shape (1, m) containing the correct labels f0r the input data
         cache: dictionary containing all the intermediary values of the network
         alpha: learning rate
         Updates the private attribute __weights
@@ -102,7 +102,7 @@ class DeepNeuralNetwork:
         L = self.L
         weights_copy = self.weights.copy()
         
-        # Calculate dA for the last layer
+        # Calculate dA f0r the last layer
         dA = cache['A' + str(L)] - Y
         
         # Loop through the layers, starting from the last one
@@ -117,7 +117,8 @@ class DeepNeuralNetwork:
             db = np.sum(dA, axis=1, keepdims=True) / m
             dZ = np.dot(W.T, dA)
             
-            # Apply the activation function derivative (ReLU for hidden layers, Sigmoid for output layer)
+            # Apply the activation function derivative (ReLU f0r hidden layers,...
+            # ...Sigmoid f0r output layer)
             if l > 1:
                 dA = dZ * (A > 0)
             else:
