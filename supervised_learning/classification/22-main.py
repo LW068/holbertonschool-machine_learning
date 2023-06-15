@@ -2,18 +2,30 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-import zipimport
+import zipfile
+import tempfile
 
-# Import the DeepNeuralNetwork class
-importer = zipimport.zipimporter('22-deep_neural_network.zip')
-Deep = importer.load_module('22-deep_neural_network').DeepNeuralNetwork
+Deep = __import__('22-deep_neural_network').DeepNeuralNetwork
 
-lib_train = np.load('../data/Binary_Train.npz')
-X_train_3D, Y_train = lib_train['X'], lib_train['Y']
-X_train = X_train_3D.reshape((X_train_3D.shape[0], -1)).T
-lib_dev = np.load('../data/Binary_Dev.npz')
-X_dev_3D, Y_dev = lib_dev['X'], lib_dev['Y']
-X_dev = X_dev_3D.reshape((X_dev_3D.shape[0], -1)).T
+with zipfile.ZipFile('data/Binary_Train.zip', 'r') as zip_file:
+    with tempfile.NamedTemporaryFile() as tmp_file:
+        npz_file = zip_file.open('Binary_Train.npz')
+        tmp_file.write(npz_file.read())
+        tmp_file.flush()
+
+        lib_train = np.load(tmp_file.name)
+        X_train_3D, Y_train = lib_train['X'], lib_train['Y']
+        X_train = X_train_3D.reshape((X_train_3D.shape[0], -1)).T
+
+with zipfile.ZipFile('data/Binary_Dev.zip', 'r') as zip_file:
+    with tempfile.NamedTemporaryFile() as tmp_file:
+        npz_file = zip_file.open('Binary_Dev.npz')
+        tmp_file.write(npz_file.read())
+        tmp_file.flush()
+
+        lib_dev = np.load(tmp_file.name)
+        X_dev_3D, Y_dev = lib_dev['X'], lib_dev['Y']
+        X_dev = X_dev_3D.reshape((X_dev_3D.shape[0], -1)).T
 
 np.random.seed(0)
 deep = Deep(X_train.shape[0], [5, 3, 1])
