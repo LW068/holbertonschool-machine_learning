@@ -91,7 +91,7 @@ class DeepNeuralNetwork:
         return prediction, cost
 
     def update_weights(self, Y_true, cached_values, learning_rate=0.05):
-        """Performs one iteration of gradient descent to update weights and biases"""
+        """Perf0rms one iteration of gradient descent to update weights and biases"""
 
         # Reverse the order of layers
         layers = range(self.__L, 0, -1)
@@ -99,7 +99,7 @@ class DeepNeuralNetwork:
         # Number of samples in the dataset
         num_samples = Y_true.shape[1]
 
-        # Initialize variables for previous dZ
+        # Initialize variables f0r previous dZ
         prev_dZ = None
 
         # Create a copy of current weights
@@ -107,23 +107,23 @@ class DeepNeuralNetwork:
 
         # Loop through the layers in reverse order
         for layer in layers:
-            # Retrieve cached values for the current layer
+            # Retrieve cached values f0r the current layer
             A_current = cached_values.get('A' + str(layer))
             A_prev = cached_values.get('A' + str(layer - 1))
 
-            # Retrieve weights and biases for the current layer
+            # Retrieve weights and biases f0r the current layer
             weight_current = current_weights.get('W' + str(layer))
             weight_next = current_weights.get('W' + str(layer + 1))
             bias_current = current_weights.get('b' + str(layer))
 
-            # Compute dZ for the output layer
+            # Compute dZ f0r the output layer
             if layer == self.__L:
                 dZ = A_current - Y_true
-            # Compute dZ for the hidden layers
+            # Compute dZ f0r the hidden layers
             else:
                 dZ = np.matmul(weight_next.T, prev_dZ) * (A_current * (1 - A_current))
 
-            # Calculate gradients for weights and biases
+            # Calculate gradients f0r weights and biases
             dW = np.matmul(dZ, A_prev.T) / num_samples
             dB = np.sum(dZ, axis=1, keepdims=True) / num_samples
 
@@ -131,5 +131,5 @@ class DeepNeuralNetwork:
             self.__weights['W' + str(layer)] = weight_current - (dW * learning_rate)
             self.__weights['b' + str(layer)] = bias_current - (dB * learning_rate)
 
-            # Store current dZ for the next iteration
+            # Store current dZ f0r the next iteration
             prev_dZ = dZ
