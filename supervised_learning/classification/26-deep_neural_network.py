@@ -147,6 +147,7 @@ class DeepNeuralNetwork:
             prev_dZ = dZ
 
     def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
+        """Traning Process"""
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
         if iterations <= 0:
