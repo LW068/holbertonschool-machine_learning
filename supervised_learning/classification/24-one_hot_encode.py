@@ -22,6 +22,7 @@ def one_hot_encode(Y, classes):
     """
     # Check if the input types are valid
     if not isinstance(Y, np.ndarray) or not isinstance(classes, int):
+        print("Invalid input in one_hot_encode:", Y, classes)
         return None
 
     try:

@@ -23,6 +23,7 @@ def one_hot_decode(one_hot):
     """
     # Check if the input is valid!
     if not isinstance(one_hot, np.ndarray):
+        print("Invalid input in one_hot_decode:", one_hot)
         return None
 
     try:
