@@ -53,7 +53,8 @@ class DeepNeuralNetwork:
             Z = np.dot(W, A) + b
             if i + 1 == self.L:
                 exp_Z = np.exp(Z)
-                self.cache['A' + str(i + 1)] = exp_Z / np.sum(exp_Z, axis=0, keepdims=True)
+                temp = np.sum(exp_Z, axis=0, keepdims=True)
+                self.cache['A' + str(i + 1)] = exp_Z / temp
             else:
                 self.cache['A' + str(i + 1)] = 1 / (1 + np.exp(-Z))
 
