@@ -1,25 +1,36 @@
 #!/usr/bin/env python3
 """
-Evaluate the output of a neural network
+Evaluate the performance of a neural network
 """
+# Import the necessary module
 import tensorflow as tf
 
 
-def evaluate(X, Y, save_path):
-    """function that evaluates the output of a nn"""
+def evaluate_nn(X, Y, save_path):
+    """
+    Function to evaluate the output of a neural network.
+    It loads a pre-trained model from a file and assesses its performance.
+    """
+
+    # Start a TensorFlow session
     with tf.Session() as sess:
-        loader = tf.train.import_meta_graph(save_path + '.meta')
+        # Load the meta graph from the save path
+        loader = tf.train.import_meta_graph(f'{save_path}.meta')
+        # Restore the session
         loader.restore(sess, save_path)
 
+        # List of tensor names we want to retrieve
+        tensor_names = ['x', 'y', 'y_pred', 'accuracy', 'loss']
+
         # Retrieve the required tensors from the graph's collection
-        var_names = ['x', 'y', 'y_pred', 'accuracy', 'loss']
-        for var_name in var_names:
-            # Get the tensor by name and assign it to a global variable
-            globals()[var_name] = tf.get_collection(var_name)[0]
+        for tensor_name in tensor_names:
+            # Get the tensor by its name and assign it to a global variable
+            globals()[tensor_name] = tf.get_collection(tensor_name)[0]
 
-        # Run the evaluation operations
-        y_pred = sess.run(globals()['y_pred'], feed_dict={x: X, y: Y})
-        loss = sess.run(globals()['loss'], feed_dict={x: X, y: Y})
-        acc = sess.run(globals()['accuracy'], feed_dict={x: X, y: Y})
+        # Evaluate the network's output, accuracy, and loss
+        # by running the corresponding operations in the session
+        y_pred_evaluated = sess.run(globals()['y_pred'], feed_dict={x: X, y: Y})
+        loss_evaluated = sess.run(globals()['loss'], feed_dict={x: X, y: Y})
+        accuracy_evaluated = sess.run(globals()['accuracy'], feed_dict={x: X, y: Y})
 
-    return y_pred, acc, loss
+    return y_pred_evaluated, accuracy_evaluated, loss_evaluated
