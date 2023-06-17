@@ -48,7 +48,8 @@ class DeepNeuralNetwork:
             else:
                 # softmax for the last layer
                 t = np.exp(Z)
-                self.__cache['A' + str(i + 1)] = t / np.sum(t, axis=0, keepdims=True)
+                self.__cache['A' + str(i + 1)] = t / np.sum(t, axis=0,
+                                                             keepdims=True)
         return self.__cache['A' + str(self.__L)], self.__cache
 
     def cost(self, Y, A):
@@ -88,7 +89,7 @@ class DeepNeuralNetwork:
         A, _ = self.forward_prop(X)  # Get the output of the network
         cost = self.cost(Y, A)  # Calculate the cost
         prediction = np.argmax(A, axis=0)
-            # Apply the threshold to get the predicted labels
+        # Apply the threshold to get the predicted labels
         return prediction, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
