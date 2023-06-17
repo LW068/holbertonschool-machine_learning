@@ -13,29 +13,32 @@ class DeepNeuralNetwork:
     """Class that defines a deep neural network performing binary
     classification.
     """
-    def __init__(self, nx, layers):
-        """Initialize all the variables."""
-        if type(nx) is not int:
-            raise TypeError("nx must be an integer")
-        if nx < 1:
-            raise ValueError("nx must be a positive integer")
-        if type(layers) is not list or not layers:
-            raise TypeError("layers must be a list of positive integers")
-        if not all(map(lambda x: x > 0 and isinstance(x, int), layers)):
-            raise TypeError("layers must be a list of positive integers")
+    def __init__(self, nx, layers, activation='sig'):
+        if not isinstance(nx, int) or nx < 1:
+            raise TypeError('nx must be a positive integer')
+        if not isinstance(layers, list) or not all(
+                map(lambda x: isinstance(x, int) and x > 0, layers)):
+            raise TypeError('layers must be a list of positive integers')
+
+        if activation not in ['sig', 'tanh']:
+            raise ValueError("activation must be 'sig' or 'tanh'")
 
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
-        layer_sizes = np.concatenate(([nx], layers))
+        self.__activation = activation
 
-        for l in range(1, self.__L + 1):
-            self.__weights["W" + str(l)] = (
-                np.random.randn(layer_sizes[l], layer_sizes[l - 1]) *
-                np.sqrt(2 / layer_sizes[l - 1])
-            )
-            self.__weights["b" + str(l)] = np.zeros((layer_sizes[l], 1))
+        for i in range(len(layers)):
+            if i == 0:
+                self.__weights['W' + str(i + 1)] = np.random.randn(layers[i], nx) * np.sqrt(2/nx)
+            else:
+                self.__weights['W' + str(i + 1)] = np.random.randn(layers[i], layers[i - 1]) * np.sqrt(2/layers[i - 1])
+            self.__weights['b' + str(i + 1)] = np.zeros((layers[i], 1))
 
+    @property
+    def activation(self):
+        return self.__activation
+    
     def forward_prop(self, X):
         """Performs forward propagation through the network
 
