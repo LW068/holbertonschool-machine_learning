@@ -49,7 +49,7 @@ class DeepNeuralNetwork:
                 # softmax for the last layer
                 t = np.exp(Z)
                 self.__cache['A' + str(i + 1)] = t / np.sum(t, axis=0,
-                                    keepdims=True)
+                                                keepdims=True)
         return self.__cache['A' + str(self.__L)], self.__cache
 
     def cost(self, Y, A):
