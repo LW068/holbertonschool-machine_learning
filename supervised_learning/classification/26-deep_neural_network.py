@@ -5,6 +5,7 @@ Module for 20.
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 import pickle
 
 
@@ -178,7 +179,7 @@ class DeepNeuralNetwork:
             plt.show()
 
         return self.evaluate(X, Y)
-    
+
     def save(self, filename):
         """
         Saves the instance object to a file in pickle format.
