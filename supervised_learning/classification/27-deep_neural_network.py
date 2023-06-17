@@ -37,27 +37,40 @@ class DeepNeuralNetwork:
             self.__weights["b" + str(l)] = np.zeros((layer_sizes[l], 1))
 
     def forward_prop(self, X):
-        """Calculates the forward propagation of the neural network"""
-        self.__cache['A0'] = X
-        for i in range(self.__L):
-            Z = np.matmul(self.__weights['W' + str(i + 1)],
-                          self.__cache['A' + str(i)])\
-                + self.__weights['b' + str(i + 1)]
-            if i != self.__L - 1:
-                self.__cache['A' + str(i + 1)] = 1 / (1 + np.exp(-Z))
+        """Performs forward propagation through the network
+
+        Args:
+            X: input data
+
+        Returns:
+            Output of the neural network and the cache
+        """
+        self.cache['A0'] = X
+        for i in range(self.L):
+            A = self.cache['A' + str(i)]
+            W = self.weights['W' + str(i + 1)]
+            b = self.weights['b' + str(i + 1)]
+            Z = np.dot(W, A) + b
+            if i + 1 == self.L:
+                exp_Z = np.exp(Z)
+                self.cache['A' + str(i + 1)] = exp_Z / np.sum(exp_Z, axis=0, keepdims=True)
             else:
-                # softmax for the last layer
-                t = np.exp(Z)
-                self.__cache['A' + str(i + 1)] = t / np.sum(t, axis=0,
-                                                            keepdims=True)
-        return self.__cache['A' + str(self.__L)], self.__cache
+                self.cache['A' + str(i + 1)] = 1 / (1 + np.exp(-Z))
+
+        return self.cache['A' + str(self.L)], self.cache
 
     def cost(self, Y, A):
-        """
-        Calculates the cost of the model using logistic regression
+        """Calculates the cost of the model using logistic regression
+
+        Args:
+            Y: correct labels for the input data
+            A: activated output of the neuron for each example
+
+        Returns:
+            The cost
         """
         m = Y.shape[1]
-        cost = -1 / m * np.sum(Y * np.log(A))
+        cost = - (1 / m) * np.sum(Y * np.log(A))
         return cost
 
     @property
@@ -86,11 +99,10 @@ class DeepNeuralNetwork:
         Returns the neuron's prediction and the cost of...
         ...the network, respectively
         """
-        A, _ = self.forward_prop(X)  # Get the output of the network
-        cost = self.cost(Y, A)  # Calculate the cost
-        prediction = np.argmax(A, axis=0)
-        # Apply the threshold to get the predicted labels
-        return prediction, cost
+        A, _ = self.forward_prop(X)
+        cost = self.cost(Y, A)
+        pred = np.argmax(A, axis=0)
+        return pred, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """
