@@ -147,7 +147,7 @@ class DeepNeuralNetwork:
             prev_dZ = dZ
 
     def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True,
-              graph=True, step=100):
+              graph=True, step=None):
         """Traning Process"""
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
@@ -157,10 +157,13 @@ class DeepNeuralNetwork:
             raise TypeError("alpha must be a float")
         if alpha <= 0:
             raise ValueError("alpha must be positive")
-        if not isinstance(step, int):
-            raise TypeError("step must be an integer")
-        if step <= 0 or step > iterations:
-            raise ValueError("step must be positive and <= iterations")
+        if step is not None:
+            if not isinstance(step, int):
+                raise TypeError("step must be an integer")
+            if step <= 0 or step > iterations:
+                raise ValueError("step must be positive and <= iterations")
+        else:
+            step = iterations
 
         costs = []
         for i in range(iterations):
