@@ -27,13 +27,13 @@ def one_hot_encode(Y, classes):
     try:
         # Create an identity matrix of size 'classes x classes'
         identity_matrix = np.eye(classes)
-        
+
         # Select rows corresponding to the labels in Y
         selected_rows = identity_matrix[Y]
-        
+
         # Transpose the resulting matrix to get the one-hot encoding
         one_hot = selected_rows.T
-        
+
         return one_hot
     except Exception:
         return None
