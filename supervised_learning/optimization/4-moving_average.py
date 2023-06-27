@@ -3,6 +3,7 @@
 Module for task 4-moving_average.py
 """
 
+
 def moving_average(data, beta):
     """
     Function that calculates the weighted moving average of a data set
