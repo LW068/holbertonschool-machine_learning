@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-This module contains the function normalization_constants which calculates the normalization (standardization) constants of a matrix.
+This module contains the function...
+...normalization_constants which calculates the...
+...normalization (standardization) constants of a matrix.
 """
 
 import numpy as np
