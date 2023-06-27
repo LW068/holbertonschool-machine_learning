@@ -114,4 +114,4 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
         # Save the model
         save_path = saver.save(sess, save_path)
 
-    return 
+    return
