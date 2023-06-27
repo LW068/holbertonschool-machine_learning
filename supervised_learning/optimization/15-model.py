@@ -8,6 +8,7 @@ learning rate decay, and batch normalization.
 import tensorflow as tf
 import numpy as np
 
+
 def create_batch_norm_layer(prev, n, activation):
     """Creates a batch normalization layer"""
     init = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
@@ -15,25 +16,18 @@ def create_batch_norm_layer(prev, n, activation):
     mean, var = tf.nn.moments(layer(prev), axes=[0])
     gamma = tf.Variable(tf.constant(1.0, shape=[n]), name="gamma")
     beta = tf.Variable(tf.constant(0.0, shape=[n]), name="beta")
-    BN = tf.nn.batch_normalization(layer(prev), mean, var, offset=beta, scale=gamma, variance_epsilon=1e-8)
+    BN = tf.nn.batch_normalization(layer(prev), mean, var, offset=beta,
+                                   scale=gamma, variance_epsilon=1e-8)
     return activation(BN)
 
-def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9, beta2=0.999, epsilon=1e-8, decay_rate=1, batch_size=32, epochs=5, save_path='/tmp/model.ckpt'):
+
+def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9,
+          beta2=0.999, epsilon=1e-8, decay_rate=1, batch_size=32, epochs=5,
+          save_path='/tmp/model.ckpt'):
     """
-    Builds, trains, and saves a neural network model in tensorflow using Adam optimization, mini-batch gradient descent, learning rate decay, and batch normalization.
-    Data_train is a tuple containing the training inputs and training labels, respectively
-    Data_valid is a tuple containing the validation inputs and validation labels, respectively
-    layers is a list containing the number of nodes in each layer of the network
-    activation is a list containing the activation functions used for each layer of the network
-    alpha is the learning rate
-    beta1 is the weight for the first moment of Adam Optimization
-    beta2 is the weight for the second moment of Adam Optimization
-    epsilon is a small number used to avoid division by zero
-    decay_rate is the decay rate for inverse time decay of the learning rate (the corresponding decay step should be 1)
-    batch_size is the number of data points that should be in a mini-batch
-    epochs is the number of times the training should pass through the whole dataset
-    save_path is the path where the model should be saved to
-    Returns: the path where the model was saved
+    Builds, trains, and saves a neural network model in tensorflow using Adam
+    optimization, mini-batch gradient descent, learning rate decay, and batch
+    normalization.
     """
     # Unpack the data
     X_train, Y_train = Data_train
@@ -58,7 +52,8 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9, b
     alpha = tf.train.inverse_time_decay(alpha, global_step, 1, decay_rate)
 
     # Define the optimizer
-    optimizer = tf.train.AdamOptimizer(learning_rate=alpha, beta1=beta1, beta2=beta2, epsilon=epsilon)
+    optimizer = tf.train.AdamOptimizer(learning_rate=alpha, beta1=beta1,
+                                       beta2=beta2, epsilon=epsilon)
     train_op = optimizer.minimize(cost, global_step=global_step)
 
     # Add an operation to initialize the variables
@@ -86,21 +81,30 @@ def model(Data_train, Data_valid, layers, activations, alpha=0.001, beta1=0.9, b
             for i in range(0, X_train.shape[0], batch_size):
                 X_train_mini = X_train[i:i+batch_size]
                 Y_train_mini = Y_train[i:i+batch_size]
-                _, cost_mini = sess.run([train_op, cost], feed_dict={x: X_train_mini, y: Y_train_mini})
+                _, cost_mini = sess.run([train_op, cost],
+                                        feed_dict={x: X_train_mini,
+                                                   y: Y_train_mini})
                 cost_train += cost_mini
 
                 if (i/batch_size) % 100 == 0 and i/batch_size > 0:
-                    cost_mini = sess.run(cost, feed_dict={x: X_train_mini, y: Y_train_mini})
-                    accuracy_mini = np.mean(np.argmax(Y_train_mini, axis=1) == sess.run(
-                        tf.argmax(layer, 1), feed_dict={x: X_train_mini, y: Y_train_mini}))
+                    cost_mini = sess.run(cost, feed_dict={x: X_train_mini,
+                                                          y: Y_train_mini})
+                    accuracy_mini = np.mean(
+                        np.argmax(Y_train_mini, axis=1) == sess.run(
+                            tf.argmax(layer, 1),
+                            feed_dict={x: X_train_mini, y: Y_train_mini}))
                     print("\tStep {}:".format(int(i/batch_size)))
                     print("\t\tCost: {}".format(cost_mini))
                     print("\t\tAccuracy: {}".format(accuracy_mini))
 
             cost_train = sess.run(cost, feed_dict={x: X_train, y: Y_train})
-            accuracy_train = np.mean(np.argmax(Y_train, axis=1) == sess.run(tf.argmax(layer, 1), feed_dict={x: X_train, y: Y_train}))
+            accuracy_train = np.mean(
+                np.argmax(Y_train, axis=1) == sess.run(
+                    tf.argmax(layer, 1), feed_dict={x: X_train, y: Y_train}))
             cost_valid = sess.run(cost, feed_dict={x: X_valid, y: Y_valid})
-            accuracy_valid = np.mean(np.argmax(Y_valid, axis=1) == sess.run(tf.argmax(layer, 1), feed_dict={x: X_valid, y: Y_valid}))
+            accuracy_valid = np.mean(
+                np.argmax(Y_valid, axis=1) == sess.run(
+                    tf.argmax(layer, 1), feed_dict={x: X_valid, y: Y_valid}))
             print("After {} epochs:".format(epoch))
             print("\tTraining Cost: {}".format(cost_train))
             print("\tTraining Accuracy: {}".format(accuracy_train))
