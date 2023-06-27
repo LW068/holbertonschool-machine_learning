@@ -7,10 +7,11 @@ This module contains the function shuffle_data...
 
 import numpy as np
 
+
 def shuffle_data(X, Y):
     """
     Shuffles the data points in two matrices the same way.
-    
+
     Args:
         X: first numpy.ndarray of shape (m, nx) to shuffle
             m: number of data points
