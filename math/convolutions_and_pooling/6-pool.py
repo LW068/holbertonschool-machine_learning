@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""pool"""
+"""pooling images"""
 import numpy as np
 
 
@@ -32,9 +32,9 @@ def pool(images, kernel_shape, stride, mode='max'):
         for j in range(output_w):
             if mode == 'max':
                 output[:, i, j, :] = np.max(images[:, i*sh: i*sh + kh, j*sw:
-                                                   j*sw + kw, :], axis=(1,2))
+                                                   j*sw + kw, :], axis=(1, 2))
             else:  # mode == 'avg'
                 output[:, i, j, :] = np.mean(images[:, i*sh: i*sh + kh, j*sw:
-                                                    j*sw + kw, :], axis=(1,2))
+                                                    j*sw + kw, :], axis=(1, 2))
 
     return output
