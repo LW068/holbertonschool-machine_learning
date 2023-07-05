@@ -31,7 +31,7 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
         ph, pw = padding
 
     # Create an array with zero padding
-    padded_images = np.pad(images, ((0,0), (ph, ph), (pw, pw)), 'constant')
+    padded_images = np.pad(images, ((0, 0), (ph, ph), (pw, pw)), 'constant')
 
     # Calculate the output shape
     h_prime = (h - kh + 2 * ph) // sh + 1
