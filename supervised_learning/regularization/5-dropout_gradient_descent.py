@@ -36,7 +36,7 @@ def dropout_gradient_descent(Y, weights, cache, alpha, keep_prob, L):
         dA_prev = np.matmul(W.T, dZ)
         if layer != 1:
             dA = dA_prev * (1 - (A_prev ** 2)) * \
-            (cache["D" + str(layer - 1)] / keep_prob)
+                 (cache["D" + str(layer - 1)] / keep_prob)
 
         else:
             dA = dA_prev
