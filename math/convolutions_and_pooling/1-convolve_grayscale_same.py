@@ -16,7 +16,7 @@ def convolve_grayscale_same(images, kernel):
     Returns:
         numpy.ndarray: Convolved images of shape (m, h, w).
     """
-    
+
     m, h, w = images.shape
     kh, kw = kernel.shape
 
