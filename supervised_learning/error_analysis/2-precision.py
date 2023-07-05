@@ -9,8 +9,9 @@ def precision(confusion):
     Calculates the precision for each class in a confusion matrix.
 
     Args:
-    confusion : np.ndarray of shape (classes, classes) where row indices 
-                represent the correct labels and column indices represent the predicted labels.
+    confusion : np.ndarray of shape (classes, classes) where row indices
+                represent the correct labels and column...
+                ...indices represent the predicted labels.
     classes : int, the number of classes
 
     Returns:
