@@ -9,8 +9,9 @@ import numpy as np
 def dropout_forward_prop(X, weights, L, keep_prob):
     """
     Conducts forward propagation using Dropout.
-    
-    X is a numpy.ndarray of shape (nx, m) containing the input data for the network
+
+    X is a numpy.ndarray of shape (nx, m)...
+    ...containing the input data for the network
     nx is the number of input features
     m is the number of data points
     weights is a dictionary of the weights and biases of the neural network
@@ -22,13 +23,14 @@ def dropout_forward_prop(X, weights, L, keep_prob):
     Returns: a dictionary containing the outputs of each layer and the dropout
              mask used on each layer
     """
-    
+
     cache = {}
     cache['A0'] = X
 
     for i in range(L):
         # Linear Transformation
-        Z = np.matmul(weights['W' + str(i + 1)], cache['A' + str(i)]) + weights['b' + str(i + 1)]
+        Z = np.matmul(weights['W' + str(i + 1)],
+                      cache['A' + str(i)]) + weights['b' + str(i + 1)]
 
         # Activation
         if i == L - 1:
