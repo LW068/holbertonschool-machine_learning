@@ -22,7 +22,8 @@ def forward_propagation_dropout(X, weights, num_layers, keep_prob):
     cache['A0'] = X
 
     for i in range(num_layers):
-        Z = np.matmul(weights['W' + str(i + 1)], cache['A' + str(i)]) + weights['b' + str(i + 1)]
+        Z = np.matmul(weights['W' + str(i + 1)], cache['A' + str(i)]
+        ) + weights['b' + str(i + 1)]
 
         if i == num_layers - 1:
             cache['A' + str(i + 1)] = np.exp(Z) / np.sum(np.exp(Z), axis=0, keepdims=True)
