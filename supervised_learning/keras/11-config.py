@@ -4,6 +4,7 @@ import tensorflow.keras as K
 
 
 def save_config(network, filename):
+    """save_config"""
     # Get the configuration of the model as a JSON string
     model_config_string = network.to_json()
 
@@ -13,6 +14,7 @@ def save_config(network, filename):
 
 
 def load_config(filename):
+    """load_config"""
     # Read the JSON string from a file
     with open(filename, 'r') as f:
         model_config_string = f.read()
