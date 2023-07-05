@@ -2,6 +2,7 @@
 """Module for creating confusion matrix."""
 import numpy as np
 
+
 def create_confusion_matrix(labels, logits):
     """
     Create a confusion matrix.
@@ -11,7 +12,7 @@ def create_confusion_matrix(labels, logits):
     logits : np.ndarray of shape (m, classes) with predicted labels.
 
     Returns:
-    np.ndarray of shape (classes, classes) with row indices representing 
+    np.ndarray of shape (classes, classes) with row indices representing
     correct labels and column indices representing predicted labels.
     """
     m, classes = labels.shape
