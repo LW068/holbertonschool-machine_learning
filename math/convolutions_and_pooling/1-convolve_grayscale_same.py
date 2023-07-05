@@ -6,6 +6,17 @@ import numpy as np
 
 
 def convolve_grayscale_same(images, kernel):
+    """
+    Performs a same convolution on grayscale images.
+
+    Args:
+        images (numpy.ndarray): Input grayscale images of shape (m, h, w).
+        kernel (numpy.ndarray): Convolution kernel of shape (kh, kw).
+
+    Returns:
+        numpy.ndarray: Convolved images of shape (m, h, w).
+    """
+    
     m, h, w = images.shape
     kh, kw = kernel.shape
 
