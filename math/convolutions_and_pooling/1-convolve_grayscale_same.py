@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
-"""convolve_grayscale_same"""
+"""
+convolve_grayscale_same
+"""
 import numpy as np
+
 
 def convolve_grayscale_same(images, kernel):
     m, h, w = images.shape
@@ -23,4 +26,3 @@ def convolve_grayscale_same(images, kernel):
             convolved_images[:, i, j] = np.sum(image_patch * kernel, axis=(1, 2))
 
     return convolved_images
-
