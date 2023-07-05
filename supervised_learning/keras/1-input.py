@@ -12,7 +12,7 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
     ...functions used for each layer of the network
     lambtha is the L2 regularization parameter
     keep_prob is the probability that a node will be kept for dropout
-    
+
     Returns: the keras model
     """
     inputs = K.Input(shape=(nx,))
@@ -26,5 +26,5 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
             outputs = K.layers.Dropout(rate=(1 - keep_prob))(outputs)
 
     model = K.Model(inputs=inputs, outputs=outputs)
-    
+
     return model
