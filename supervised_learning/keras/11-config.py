@@ -1,24 +1,23 @@
 #!/usr/bin/env python3
-"""save & load config"""
+"""save & config w json"""
 import tensorflow.keras as K
-import json
 
 
 def save_config(network, filename):
-    # Get the configuration of the model
-    model_config = network.get_config()
+    # Get the configuration of the model as a JSON string
+    model_config_string = network.to_json()
 
-    # Save the model configuration to the file
-    with open(filename, 'w') as json_file:
-        json.dump(model_config, json_file)
+    # Write the JSON string to a file
+    with open(filename, 'w') as f:
+        f.write(model_config_string)
 
 
 def load_config(filename):
-    # Open the file containing the model configuration
-    with open(filename, 'r') as json_file:
-        model_config = json.load(json_file)
+    # Read the JSON string from a file
+    with open(filename, 'r') as f:
+        model_config_string = f.read()
 
-    # Re-construct the model from the configuration
-    network = K.models.model_from_config(model_config)
+    # Create a model from the JSON string
+    network = K.models.model_from_json(model_config_string)
 
     return network
