@@ -3,6 +3,7 @@
 Module that contains a function for early stopping during gradient descent
 """
 
+
 def early_stopping(cost, opt_cost, threshold, patience, count):
     """
     Determines if gradient descent should be stopped early
@@ -15,7 +16,8 @@ def early_stopping(cost, opt_cost, threshold, patience, count):
         count: count of how long the threshold has not been met
 
     Returns:
-        A tuple containing a boolean indicating whether to stop early, and the updated count
+        A tuple containing a boolean indicating...
+        ...whether to stop early, and the updated count
     """
     if opt_cost - cost > threshold:
         count = 0
