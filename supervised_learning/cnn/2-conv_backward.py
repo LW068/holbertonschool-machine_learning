@@ -38,8 +38,10 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
 
     # Pad A_prev and dA_prev
     if padding == "same":
-        A_prev = # your padding method here
-        dA_prev = # your padding method here
+        ph = kh // 2
+        pw = kw // 2
+        A_prev = np.pad(A_prev, ((0, 0), (ph, ph), (pw, pw), (0, 0)), 'constant', constant_values=0)
+        dA_prev = np.pad(dA_prev, ((0, 0), (ph, ph), (pw, pw), (0, 0)), 'constant', constant_values=0)
 
     # Loop over the training examples
     for i in range(m):                       
