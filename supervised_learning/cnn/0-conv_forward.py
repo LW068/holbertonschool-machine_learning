@@ -3,7 +3,6 @@
 Module for forward propagation over a convolutional layer of a neural network
 """
 import numpy as np
-from scipy.signal import convolve2d
 
 
 def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
