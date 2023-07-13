@@ -53,7 +53,8 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
                         A_slice = A_prev_pad[i, h_start:h_end, w_start:w_end]
                         weights = W[:, :, :, c]
                         biases = b[0, 0, 0, c]
-                        A[i, h, w, c] = activation(np.sum(A_slice * weights) + biases)
+                        A[i, h, w, c] = activation(np.sum(A_slice * weights)
+                                                   + biases)
 
         return A
     except Exception as e:
