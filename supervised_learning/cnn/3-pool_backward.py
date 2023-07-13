@@ -24,22 +24,29 @@ def pool_backward(dA, A_prev, kernel_shape, stride=(1, 1), mode='max'):
                     horiz_end = horiz_start + kw
 
                     if mode == "max":
-                        # Use the corners and "c" to define the current slice from a_prev
-                        a_prev_slice = A_prev[i, vert_start:vert_end, horiz_start:horiz_end, c]
+                        # Use the corners and "c" to define the...
+                        # ...current slice from a_prev
+                        a_prev_slice = A_prev[i, vert_start:vert_end,
+                                              horiz_start:horiz_end, c]
                         # Create the mask
                         mask = a_prev_slice == np.max(a_prev_slice)
-                        # Set dA_prev to be dA_prev + (the mask multiplied by the correct entry of dA)
-                        dA_prev[i, vert_start:vert_end, horiz_start:horiz_end, c] += np.multiply(mask, dA[i, h, w, c])
+                        # Set dA_prev to be dA_prev + (the mask...
+                        # ...multiplied by the correct entry of dA)
+                        dA_prev[i, vert_start:vert_end, horiz_start:horiz_end,
+                                c] += np.multiply(mask, dA[i, h, w, c])
 
                     elif mode == "avg":
                         # Get the value a from dA
                         da = dA[i, h, w, c]
                         # Define the shape of the filter as fxf
                         shape = (kh, kw)
-                        # Distribute it to get the correct slice of dA_prev. i.e. Add the distributed value of da.
-                        dA_prev[i, vert_start:vert_end, horiz_start:horiz_end, c] += distribute_value(da, shape)
+                        # Distribute it to get the correct slice of...
+                        # ...dA_prev. i.e. Add the distributed value of da.
+                        dA_prev[i, vert_start:vert_end, horiz_start:horiz_end,
+                                c] += distribute_value(da, shape)
 
     return dA_prev
+
 
 def distribute_value(dz, shape):
     """Distributes the input value in the matrix of dimension shape."""
