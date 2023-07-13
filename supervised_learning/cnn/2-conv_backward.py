@@ -75,7 +75,8 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
 
                     # Update gradients for the window and the filter's params
                     da_prev_pad[vert_start:vert_end,
-                                horiz_start:horiz_end, :] += W[:, :, :, c] * dZ[i, h, w, c]
+                                horiz_start:horiz_end, :] += W[:, :, :, c]
+                    * dZ[i, h, w, c]
                     dW[:, :, :, c] += a_slice * dZ[i, h, w, c]
                     db[:, :, :, c] += dZ[i, h, w, c]
 
