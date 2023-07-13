@@ -47,4 +47,4 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
                 biases = b[0, 0, 0, c]
                 A_new[:, i, j, c] = activation(np.sum(A_slice * weights,
                                                       axis=(1, 2, 3)) + biases)
-    return A_new
+    return np.around(A, decimals=x)
