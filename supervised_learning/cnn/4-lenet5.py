@@ -3,6 +3,7 @@
 
 import tensorflow as tf
 
+
 def lenet5(x, y):
     """Builds a modified version of the LeNet-5...
     ...architecture using tensorflow"""
