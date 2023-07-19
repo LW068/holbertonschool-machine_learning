@@ -56,7 +56,7 @@ def resnet50():
     X = identity_block(X, [512, 512, 2048])
 
     # AVGPOOL
-    X = K.layers.AveragePooling2D(pool_size=(2, 2))(X)
+    X = K.layers.AveragePooling2D(pool_size=(7, 7))(X)
 
     # Output layer
     X = K.layers.Flatten()(X)
