@@ -10,7 +10,7 @@ import tensorflow.keras as K
 
 def inception_block(A_prev, filters):
     """ Builds an inception block
-    
+
     Args:
         A_prev (keras layer): output from the previous layer
         filters (list or tuple): containing F1, F3R, F3, F5R, F5, FPP
@@ -35,7 +35,8 @@ def inception_block(A_prev, filters):
     conv5R = K.layers.Conv2D(F5R, 1, activation='relu')(A_prev)
     conv5 = K.layers.Conv2D(F5, 5, padding='same', activation='relu')(conv5R)
 
-    pool = K.layers.MaxPooling2D(pool_size=3, strides=1, padding='same')(A_prev)
+    pool = K.layers.MaxPooling2D(pool_size=3, strides=1,
+                                 padding='same')(A_prev)
     convPool = K.layers.Conv2D(FPP, 1, activation='relu')(pool)
 
     output = K.layers.concatenate([conv1, conv3, conv5, convPool])
