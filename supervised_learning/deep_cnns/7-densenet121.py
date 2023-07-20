@@ -19,7 +19,7 @@ def densenet121(growth_rate=32, compression=1.0):
 
     All weights should use he normal initialization
 
-    Returns: 
+    Returns:
     The keras model
     """
     X_input = K.Input(shape=(224, 224, 3))
