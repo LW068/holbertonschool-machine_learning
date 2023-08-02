@@ -9,7 +9,7 @@ class CustomLearningRateScheduler(K.callbacks.Callback):
             current_rate = float(K.backend.get_value(self.model.optimizer.learning_rate))
             new_rate = current_rate * 0.1
             K.backend.set_value(self.model.optimizer.learning_rate, new_rate)
-            print(f'Learning rate adjusted to: {new_rate}')
+            print('Learning rate adjusted to: {}'.format(new_rate))
 
 def preprocess_data(X, Y):
     """
