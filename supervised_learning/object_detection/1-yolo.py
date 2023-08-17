@@ -4,6 +4,7 @@
 import numpy as np
 import tensorflow as tf
 
+
 class Yolo:
     """Yolo class"""
 
@@ -31,7 +32,8 @@ class Yolo:
             grid_height, grid_width, anchor_boxes, _ = output.shape
 
             # Box coordinates
-            tx, ty, tw, th = output[..., 0:1], output[..., 1:2], output[..., 2:3], output[..., 3:4]
+            tx, ty, tw, th = output[..., 0:1], output[..., 1:2],
+            output[..., 2:3], output[..., 3:4]
             box_confidence = 1 / (1 + np.exp(-output[..., 4:5]))
             box_class_prob = 1 / (1 + np.exp(-output[..., 5:]))
 
