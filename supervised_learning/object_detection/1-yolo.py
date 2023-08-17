@@ -64,4 +64,3 @@ class Yolo:
             box_class_probs.append(output[..., 5:])
 
         return boxes, box_confidences, box_class_probs
-
