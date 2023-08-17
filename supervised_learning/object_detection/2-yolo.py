@@ -32,7 +32,8 @@ class Yolo:
 
         for idx, output in enumerate(outputs):
             grid_h, grid_w, anchor_boxes, _ = output.shape
-            tx, ty, tw, th = output[..., 0:1], output[..., 1:2], output[..., 2:3], output[..., 3:4]
+            tx, ty, tw, th = (output[..., 0:1], output[..., 1:2],
+                              output[..., 2:3], output[..., 3:4])
             confidence = 1 / (1 + np.exp(-output[..., 4:5]))
             class_prob = 1 / (1 + np.exp(-output[..., 5:]))
 
@@ -43,14 +44,19 @@ class Yolo:
                 for cx in range(grid_w):
                     for b in range(anchor_boxes):
                         pw, ph = self.anchors[idx][b]
-                        bx, by = (1 / (1 + np.exp(-tx[cy, cx, b]))) + cx, (1 / (1 + np.exp(-ty[cy, cx, b]))) + cy
-                        bw, bh = pw * np.exp(tw[cy, cx, b]), ph * np.exp(th[cy, cx, b])
+                        bx, by = ((1 / (1 + np.exp(-tx[cy, cx, b]))) + cx,
+                                  (1 / (1 + np.exp(-ty[cy, cx, b]))) + cy)
+                        bw, bh = (pw * np.exp(tw[cy, cx, b]),
+                                  ph * np.exp(th[cy, cx, b]))
 
                         bx, by = bx / grid_w, by / grid_h
-                        bw, bh = bw / int(self.model.input.shape[1]), bh / int(self.model.input.shape[2])
+                        bw, bh = (bw / int(self.model.input.shape[1]),
+                                  bh / int(self.model.input.shape[2]))
 
-                        x1, y1, x2, y2 = (bx - bw / 2) * image_size[1], (by - bh / 2) * image_size[0], \
-                                         (bx + bw / 2) * image_size[1], (by + bh / 2) * image_size[0]
+                        x1, y1, x2, y2 = ((bx - bw / 2) * image_size[1],
+                                         (by - bh / 2) * image_size[0],
+                                         (bx + bw / 2) * image_size[1],
+                                         (by + bh / 2) * image_size[0])
 
                         tx[cy, cx, b], ty[cy, cx, b], tw[cy, cx, b], th[cy, cx, b] = x1, y1, x2, y2
 
