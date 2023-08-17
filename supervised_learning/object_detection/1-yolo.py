@@ -36,8 +36,6 @@ class Yolo:
             ty, tw, th = output[..., 1:2], output[..., 2:3], output[..., 3:4]
             box_confidence = 1 / (1 + np.exp(-output[..., 4:5]))
             box_class_prob = 1 / (1 + np.exp(-output[..., 5:]))
-
-
             box_confidences.append(box_confidence)
             box_class_probs.append(box_class_prob)
 
