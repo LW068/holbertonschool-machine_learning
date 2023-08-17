@@ -4,7 +4,6 @@
 import numpy as np
 import tensorflow as tf
 
-
 class Yolo:
     """Yolo class"""
 
@@ -23,44 +22,46 @@ class Yolo:
         self.anchors = anchors
 
     def process_outputs(self, outputs, image_size):
-        """
-        Process the model outputs
-
-        outputs: a list of numpy.ndarrays containing the predictions
-                 from the Darknet model for a single image
-        image_size: numpy.ndarray containing the image’s original size
-
-        Returns: tuple of (boxes, box_confidences, box_class_probs)
-        """
+        """Process the model outputs"""
         boxes = []
         box_confidences = []
         box_class_probs = []
 
         for i, output in enumerate(outputs):
             grid_height, grid_width, anchor_boxes, _ = output.shape
-            box = output[..., :4]
 
-            # Process the boxes
-            for h in range(grid_height):
-                for w in range(grid_width):
-                    for anchor in range(anchor_boxes):
-                        pw, ph = self.anchors[i][anchor]
-                        tx, ty, tw, th = box[h, w, anchor, :]
-                        bx = (tx + w) / grid_width
-                        by = (ty + h) / grid_height
-                        bw = pw * np.exp(tw) / self.model.input.shape[1]
-                        bh = ph * np.exp(th) / self.model.input.shape[2]
-                        box[h, w, anchor, 0] = (
-                            bx - bw / 2) * image_size[1]
-                        box[h, w, anchor, 1] = (
-                            by - bh / 2) * image_size[0]
-                        box[h, w, anchor, 2] = (
-                            bx + bw / 2) * image_size[1]
-                        box[h, w, anchor, 3] = (
-                            by + bh / 2) * image_size[0]
+            # Box coordinates
+            tx, ty, tw, th = output[..., 0:1], output[..., 1:2], output[..., 2:3], output[..., 3:4]
+            box_confidence = 1 / (1 + np.exp(-output[..., 4:5]))
+            box_class_prob = 1 / (1 + np.exp(-output[..., 5:]))
 
-            boxes.append(box)
-            box_confidences.append(output[..., 4:5])
-            box_class_probs.append(output[..., 5:])
+            box_confidences.append(box_confidence)
+            box_class_probs.append(box_class_prob)
+
+            for cy in range(grid_height):
+                for cx in range(grid_width):
+                    for b in range(anchor_boxes):
+                        pw, ph = self.anchors[i][b]
+                        bx = (1 / (1 + np.exp(-tx[cy, cx, b]))) + cx
+                        by = (1 / (1 + np.exp(-ty[cy, cx, b]))) + cy
+                        bw = pw * np.exp(tw[cy, cx, b])
+                        bh = ph * np.exp(th[cy, cx, b])
+
+                        bx /= grid_width
+                        by /= grid_height
+                        bw /= int(self.model.input.shape[1])
+                        bh /= int(self.model.input.shape[2])
+
+                        x1 = (bx - (bw / 2)) * image_size[1]
+                        y1 = (by - (bh / 2)) * image_size[0]
+                        x2 = (bx + (bw / 2)) * image_size[1]
+                        y2 = (by + (bh / 2)) * image_size[0]
+
+                        tx[cy, cx, b] = x1
+                        ty[cy, cx, b] = y1
+                        tw[cy, cx, b] = x2
+                        th[cy, cx, b] = y2
+
+            boxes.append(np.concatenate((tx, ty, tw, th), axis=-1))
 
         return boxes, box_confidences, box_class_probs
