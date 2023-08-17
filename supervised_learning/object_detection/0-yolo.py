@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
+"""Yolo Algorithm for Object Detection"""
+
 import tensorflow.keras as K
+
 
 class Yolo:
     """ Yolo v3 algorithm to perform object detection """
@@ -10,7 +13,8 @@ class Yolo:
         classes_path: path to list of class names for Darknet model
         class_t: float representing the box score threshold
         nms_t: float representing the IOU threshold for non-max suppression
-        anchors: numpy.ndarray of shape (outputs, anchor_boxes, 2) containing all of the anchor boxes
+        anchors: numpy.ndarray shape (outputs, anchor_boxes, 2)
+        containing all of the anchor boxes
         """
 
         # Load Darknet Keras model
@@ -24,4 +28,3 @@ class Yolo:
         self.class_t = class_t
         self.nms_t = nms_t
         self.anchors = anchors
-
