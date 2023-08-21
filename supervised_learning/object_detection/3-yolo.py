@@ -106,42 +106,43 @@ class Yolo:
         return filtered_boxes, box_classes, box_scores
 
     def non_max_suppression(self, filtered_boxes, box_classes, box_scores):
-    """Apply non-max suppression to filter boxes."""
-    selected_boxes = []
-    selected_classes = []
-    selected_scores = []
+        """Apply non-max suppression to filter boxes."""
+        selected_boxes = []
+        selected_classes = []
+        selected_scores = []
 
-    for unique_class in np.unique(box_classes):
-        indices = np.where(box_classes == unique_class)
-        boxes_of_class = filtered_boxes[indices]
-        scores_of_class = box_scores[indices]
+        for unique_class in np.unique(box_classes):
+            indices = np.where(box_classes == unique_class)
+            boxes_of_class = filtered_boxes[indices]
+            scores_of_class = box_scores[indices]
 
-        while boxes_of_class.shape[0] > 0:
-            # Select the box with the highest score
-            top_index = np.argmax(scores_of_class)
-            top_box = boxes_of_class[top_index]
-            top_score = scores_of_class[top_index]
-            top_class = unique_class
+            while boxes_of_class.shape[0] > 0:
+                # Select the box with the highest score
+                top_index = np.argmax(scores_of_class)
+                top_box = boxes_of_class[top_index]
+                top_score = scores_of_class[top_index]
+                top_class = unique_class
 
-            # Add to the selected list
-            selected_boxes.append(top_box)
-            selected_classes.append(top_class)
-            selected_scores.append(top_score)
+                # Add to the selected list
+                selected_boxes.append(top_box)
+                selected_classes.append(top_class)
+                selected_scores.append(top_score)
 
-            # Remove the top box
-            boxes_of_class = np.delete(boxes_of_class, top_index, axis=0)
-            scores_of_class = np.delete(scores_of_class, top_index, axis=0)
+                # Remove the top box
+                boxes_of_class = np.delete(boxes_of_class, top_index, axis=0)
+                scores_of_class = np.delete(scores_of_class, top_index, axis=0)
 
-            # Compute IOU with other boxes
-            iou_values = self.intersection_over_union(top_box, boxes_of_class)
+                # Compute IOU with other boxes
+                iou_values = self.calc_intersection_over_union(
+                    top_box, boxes_of_class)
 
-            # Filter boxes based on IOU threshold
-            valid_indices = np.where(iou_values < self.nms_t)
-            boxes_of_class = boxes_of_class[valid_indices]
-            scores_of_class = scores_of_class[valid_indices]
+                # Filter boxes based on IOU threshold
+                valid_indices = np.where(iou_values < self.nms_t)
+                boxes_of_class = boxes_of_class[valid_indices]
+                scores_of_class = scores_of_class[valid_indices]
 
-    return np.array(selected_boxes), np.array(selected_classes), np.array(selected_scores)
-
+        return (np.array(selected_boxes), np.array(selected_classes),
+                np.array(selected_scores))
     def calc_intersection_over_union(self, main_box, other_boxes):
         """Calculate the intersection over union!"""
         x1 = np.maximum(main_box[0], other_boxes[:, 0])
