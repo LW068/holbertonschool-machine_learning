@@ -70,8 +70,8 @@ class Yolo:
                         )
 
                         tx[cy, cx, b], ty[cy, cx, b], \
-                        tw[cy, cx, b], th[cy, cx, b] = (
-                            x1, y1, x2, y2
+                            tw[cy, cx, b], th[cy, cx, b] = (
+                                x1, y1, x2, y2
                         )
 
             boxes.append(np.concatenate((tx, ty, tw, th), axis=-1))
