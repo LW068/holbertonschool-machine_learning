@@ -13,7 +13,8 @@ class Yolo:
         model (Keras model): The pre-trained Darknet model.
         class_names (list): Names of classes that can be detected.
         class_t (float): Minimum confidence threshold for filtering.
-        nms_t (float): Intersection over Union threshold for non-max suppression.
+        nms_t (float): Intersection over Union threshold for
+                       non-max suppression.
         anchors (numpy.ndarray): Pre-defined anchor boxes.
     """
 
@@ -68,23 +69,35 @@ class Yolo:
                             (by + bh / 2) * image_size[0]
                         )
 
-                        tx[cy, cx, b], ty[cy, cx, b], tw[cy, cx, b], th[cy, cx, b] = x1, y1, x2, y2
+                        tx[cy, cx, b], ty[cy, cx, b], \
+                            tw[cy, cx, b], th[cy, cx, b] = (
+                                x1, y1, x2, y2
+                        )
 
             boxes.append(np.concatenate((tx, ty, tw, th), axis=-1))
 
         return boxes, confidences, class_probs
 
     def filter_boxes(self, boxes, box_confidences, box_class_probs):
-        """Refine and filter boxes based on confidence and class probability."""
-        box_scores = [conf * prob for conf, prob in zip(box_confidences, box_class_probs)]
+        """Refine and filter boxes based on
+        confidence and class probability."""
+        box_scores = [
+            conf * prob for conf, prob in zip(box_confidences, box_class_probs)
+        ]
         box_classes = [np.argmax(score, axis=-1) for score in box_scores]
         box_class_scores = [np.max(score, axis=-1) for score in box_scores]
 
         prediction_mask = [score >= self.class_t for score in box_class_scores]
 
-        filtered_boxes = [box[mask] for box, mask in zip(boxes, prediction_mask)]
-        box_classes = [cls[mask] for cls, mask in zip(box_classes, prediction_mask)]
-        box_scores = [score[mask] for score, mask in zip(box_class_scores, prediction_mask)]
+        filtered_boxes = [box[mask]
+                          for box, mask in zip(boxes, prediction_mask)]
+        box_classes = [cls[mask]
+                       for cls, mask in zip(box_classes, prediction_mask)]
+        box_scores = [
+            score[mask] for score,
+            mask in zip(
+                box_class_scores,
+                prediction_mask)]
 
         filtered_boxes = np.concatenate(filtered_boxes)
         box_classes = np.concatenate(box_classes)
@@ -93,50 +106,30 @@ class Yolo:
         return filtered_boxes, box_classes, box_scores
 
     def non_max_suppression(self, filtered_boxes, box_classes, box_scores):
-        """Apply non-max suppression to filter boxes."""
-        final_boxes, final_classes, final_scores = [], [], []
+    """Perform non-max suppression on the filtered bounding boxes."""
+    box_predictions = []
+    predicted_box_classes = []
+    predicted_box_scores = []
 
-        unique_classes = set(box_classes)
+    # Iterate through unique classes
+    for c in np.unique(box_classes):
+        # Mask to get indices for the specific class
+        class_indices = np.where(box_classes == c)
+        class_boxes = filtered_boxes[class_indices]
+        class_scores = box_scores[class_indices]
 
-        for cls in unique_classes:
-            indices = np.where(box_classes == cls)
-            class_specific_boxes = filtered_boxes[indices]
-            class_specific_scores = box_scores[indices]
+        # Apply TensorFlow's non-max suppression for the specific class
+        selected_indices = tf.image.non_max_suppression(
+            class_boxes, class_scores, max_output_size=class_boxes.shape[0], iou_threshold=self.nms_t)
 
-            sorted_indices = np.argsort(class_specific_scores)[::-1]
-            class_specific_boxes = class_specific_boxes[sorted_indices]
-            class_specific_scores = class_specific_scores[sorted_indices]
+        # Gather the selected boxes, classes, and scores
+        box_predictions.append(tf.gather(class_boxes, selected_indices))
+        predicted_box_classes.append([c] * len(selected_indices))
+        predicted_box_scores.append(tf.gather(class_scores, selected_indices))
 
-            while len(class_specific_boxes) > 0:
-                final_boxes.append(class_specific_boxes[0])
-                final_classes.append(cls)
-                final_scores.append(class_specific_scores[0])
+    # Concatenate the results
+    box_predictions = np.concatenate(box_predictions, axis=0)
+    predicted_box_classes = np.concatenate(predicted_box_classes, axis=0)
+    predicted_box_scores = np.concatenate(predicted_box_scores, axis=0)
 
-                if len(class_specific_boxes) == 1:
-                    break
-
-                iou_values = self.calculate_iou(final_specific_boxes[0], class_specific_boxes[1:])
-                iou_mask = iou_values < self.nms_t
-
-                class_specific_boxes = class_specific_boxes[1:][iou_mask]
-                class_specific_scores = class_specific_scores[1:][iou_mask]
-
-        return (np.array(final_boxes), np.array(final_classes), np.array(final_scores))
-
-    def calculate_iou(self, box1, boxes):
-        """Calculate Intersection over Union (IoU) between boxes."""
-        x1, y1, x2, y2 = (
-            np.maximum(box1[0], boxes[:, 0]),
-            np.maximum(box1[1], boxes[:, 1]),
-            np.minimum(box1[2], boxes[:, 2]),
-            np.minimum(box1[3], boxes[:, 3])
-        )
-
-        intersection_area = np.maximum(x2 - x1, 0) * np.maximum(y2 - y1, 0)
-
-        box1_area = (box1[2] - box1[0]) * (box1[3] - box1[1])
-        boxes_area = (boxes[:, 2] - boxes[:, 0]) * (boxes[:, 3] - boxes[:, 1])
-
-        union_area = box1_area + boxes_area - intersection_area
-
-        return intersection_area / union_area
+    return box_predictions, predicted_box_classes, predicted_box_scores
