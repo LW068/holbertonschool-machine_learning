@@ -13,7 +13,8 @@ class Yolo:
         model (Keras model): The pre-trained Darknet model.
         class_names (list): Names of classes that can be detected.
         class_t (float): Minimum confidence threshold for filtering.
-        nms_t (float): Intersection over Union threshold for non-max suppression.
+        nms_t (float): Intersection over Union threshold for
+                       non-max suppression.
         anchors (numpy.ndarray): Pre-defined anchor boxes.
     """
 
@@ -68,7 +69,9 @@ class Yolo:
                             (by + bh / 2) * image_size[0]
                         )
 
-                        tx[cy, cx, b], ty[cy, cx, b], tw[cy, cx, b], th[cy, cx, b] = x1, y1, x2, y2
+                        tx[cy, cx, b], ty[cy, cx, b], tw[cy, cx, b], th[cy, cx, b] = (
+                            x1, y1, x2, y2
+                        )
 
             boxes.append(np.concatenate((tx, ty, tw, th), axis=-1))
 
