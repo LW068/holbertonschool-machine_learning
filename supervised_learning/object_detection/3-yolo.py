@@ -142,18 +142,18 @@ class Yolo:
 
     return np.array(selected_boxes), np.array(selected_classes), np.array(selected_scores)
 
-def calc_intersection_over_union(self, main_box, other_boxes):
-    """Calculate the intersection over union!"""
-    x1 = np.maximum(main_box[0], other_boxes[:, 0])
-    y1 = np.maximum(main_box[1], other_boxes[:, 1])
-    x2 = np.minimum(main_box[2], other_boxes[:, 2])
-    y2 = np.minimum(main_box[3], other_boxes[:, 3])
+    def calc_intersection_over_union(self, main_box, other_boxes):
+        """Calculate the intersection over union!"""
+        x1 = np.maximum(main_box[0], other_boxes[:, 0])
+        y1 = np.maximum(main_box[1], other_boxes[:, 1])
+        x2 = np.minimum(main_box[2], other_boxes[:, 2])
+        y2 = np.minimum(main_box[3], other_boxes[:, 3])
 
-    intersection = np.maximum(x2 - x1, 0) * np.maximum(y2 - y1, 0)
+        intersection = np.maximum(x2 - x1, 0) * np.maximum(y2 - y1, 0)
 
-    main_area = (main_box[2] - main_box[0]) * (main_box[3] - main_box[1])
-    other_areas = (other_boxes[:, 2] - other_boxes[:, 0]) * (other_boxes[:, 3] - other_boxes[:, 1])
+        main_area = (main_box[2] - main_box[0]) * (main_box[3] - main_box[1])
+        other_areas = (other_boxes[:, 2] - other_boxes[:, 0]) * (other_boxes[:, 3] - other_boxes[:, 1])
 
-    union = main_area + other_areas - intersection
+        union = main_area + other_areas - intersection
 
-    return intersection / union
+        return intersection / union
