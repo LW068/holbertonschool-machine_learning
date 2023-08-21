@@ -154,8 +154,10 @@ class Yolo:
         intersection = np.maximum(x2 - x1, 0) * np.maximum(y2 - y1, 0)
 
         main_area = (main_box[2] - main_box[0]) * (main_box[3] - main_box[1])
-        other_areas = (other_boxes[:, 2] - other_boxes[:, 0]) * (other_boxes[:,
-                                                                 3] - other_boxes[:, 1])
+        other_areas = (
+            (other_boxes[:, 2] - other_boxes[:, 0]) *
+            (other_boxes[:, 3] - other_boxes[:, 1])
+        )
 
         union = main_area + other_areas - intersection
 
