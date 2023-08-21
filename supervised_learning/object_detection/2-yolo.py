@@ -87,9 +87,15 @@ class Yolo:
 
         prediction_mask = [score >= self.class_t for score in box_class_scores]
 
-        filtered_boxes = [box[mask] for box, mask in zip(boxes, prediction_mask)]
-        box_classes = [cls[mask] for cls, mask in zip(box_classes, prediction_mask)]
-        box_scores = [score[mask] for score, mask in zip(box_class_scores, prediction_mask)]
+        filtered_boxes = [box[mask]
+                          for box, mask in zip(boxes, prediction_mask)]
+        box_classes = [cls[mask]
+                       for cls, mask in zip(box_classes, prediction_mask)]
+        box_scores = [
+            score[mask] for score,
+            mask in zip(
+                box_class_scores,
+                prediction_mask)]
 
         filtered_boxes = np.concatenate(filtered_boxes)
         box_classes = np.concatenate(box_classes)
