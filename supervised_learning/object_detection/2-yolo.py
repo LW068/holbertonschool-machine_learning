@@ -69,16 +69,19 @@ class Yolo:
                             (by + bh / 2) * image_size[0]
                         )
 
-                        tx[cy, cx, b], ty[cy, cx, b], tw[cy, cx, b], th[cy, cx, b] = (
+                        tx[cy, cx, b], ty[cy, cx, b],
+                        tw[cy, cx, b], th[cy, cx, b] = (
                             x1, y1, x2, y2
                         )
+
 
             boxes.append(np.concatenate((tx, ty, tw, th), axis=-1))
 
         return boxes, confidences, class_probs
 
     def filter_boxes(self, boxes, box_confidences, box_class_probs):
-        """Refine and filter boxes based on confidence and class probability."""
+        """Refine and filter boxes based on
+        confidence and class probability."""
         box_scores = [
             conf * prob for conf, prob in zip(box_confidences, box_class_probs)
         ]
