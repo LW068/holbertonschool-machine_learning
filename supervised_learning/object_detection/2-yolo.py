@@ -69,7 +69,8 @@ class Yolo:
                             (by + bh / 2) * image_size[0]
                         )
 
-                        tx[cy, cx, b], ty[cy, cx, b], tw[cy, cx, b], th[cy, cx, b] = (
+                        tx[cy, cx, b], ty[cy, cx, b], tw[cy, cx, b], th[cy, cx,
+                                                                                b] = (
                             x1, y1, x2, y2
                         )
 
@@ -77,13 +78,19 @@ class Yolo:
 
         return boxes, confidences, class_probs
 
-    def filter_boxes(self, boxes, box_confidences, box_class_probs):
-        """Refine and filter boxes based on confidence and class probability."""
+        """Refine and filter boxes based on confidence and class 
+                                                                 probability."""
+            conf * prob for conf, prob in zip(box_confidences,
+                                                               box_class_probs)
         box_scores = [
             conf * prob for conf, prob in zip(box_confidences, box_class_probs)
         ]
-        box_classes = [np.argmax(score, axis=-1) for score in box_scores]
-        box_class_scores = [np.max(score, axis=-1) for score in box_scores]
+        prediction_mask = [score >= self.class_t for score in 
+                                                              box_class_scores]
+        filtered_boxes = [box[mask] for box, mask in zip(boxes,
+        box_classes = [cls[mask] for cls, mask in zip(box_classes,
+        box_scores = [score[mask] for score, mask in zip(box_class_scores,
+                                                                           prediction_mask)]
 
         prediction_mask = [score >= self.class_t for score in box_class_scores]
 
