@@ -210,4 +210,3 @@ class Yolo:
         original_shapes = np.array(original_shapes)
 
         return processed_images, original_shapes
-
