@@ -164,7 +164,7 @@ class Yolo:
         union = main_area + other_areas - intersection
 
         return intersection / union
-      
+
     @staticmethod
     def load_images(folder_path):
         """Load images from a folder."""
