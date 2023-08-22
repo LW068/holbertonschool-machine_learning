@@ -180,20 +180,34 @@ class Yolo:
         return images, image_paths
 
     def preprocess_images(self, images):
-        """Preprocess images for Yolo model"""
-        ni = len(images)  # Number of images
-        input_h, input_w = self.model.input.shape[1:3]  # Input shape for Darknet model
-        pimages = np.zeros((ni, input_h, input_w, 3))
-        image_shapes = np.zeros((ni, 2))
+        """Preprocess images for the Yolo
+        model by resizing and rescaling."""
+        # Get input dimensions from the model's input shape
+        input_h, input_w = self.model.input.shape[1:3]
 
-        for i, image in enumerate(images):
-            # Record original shape
-            image_shapes[i] = image.shape[:2]
+        # Lists to store preprocessed images and original shapes
+        processed_images = []
+        original_shapes = []
 
-            # Resize with inter-cubic interpolation
-            resized_image = cv2.resize(image, (input_w, input_h), interpolation=cv2.INTER_CUBIC)
+        # Loop through each image in the input list
+        for img in images:
+            # Store original shape
+            original_shape = img.shape[:2]
+            original_shapes.append(original_shape)
 
-            # Rescale pixel values to [0, 1]
-            pimages[i] = resized_image / 255.0
+            # Resize using inter-cubic interpolation
+            resized_img = cv2.resize(img, (input_w, input_h),
+                                     interpolation=cv2.INTER_CUBIC)
 
-        return pimages, image_shapes
+            # Normalize pixel values to the range [0, 1]
+            normalized_img = resized_img / 255.0
+
+            # Append the preprocessed image to the list
+            processed_images.append(normalized_img)
+
+        # Convert lists to numpy arrays
+        processed_images = np.array(processed_images)
+        original_shapes = np.array(original_shapes)
+
+        return processed_images, original_shapes
+
