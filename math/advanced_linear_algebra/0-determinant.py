@@ -30,6 +30,7 @@ def determinant(matrix):
 
     return det
 
+
 if __name__ == '__main__':
     mat0 = [[]]
     mat1 = [[5]]
