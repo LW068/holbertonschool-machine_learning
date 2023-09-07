@@ -54,6 +54,7 @@ if __name__ == '__main__':
     except Exception as e:
         print(e)
 
+
 def cofactor(matrix):
     """
     Calculates the cofactor matrix.
