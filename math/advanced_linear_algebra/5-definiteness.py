@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Module to determine the definiteness of a matrix."""
 
+
 import numpy as np
+
 
 def definiteness(matrix):
     """Calculates the definiteness of a matrix.
@@ -16,6 +18,9 @@ def definiteness(matrix):
         raise TypeError("matrix must be a numpy.ndarray")
     
     if len(matrix.shape) != 2 or matrix.shape[0] != matrix.shape[1]:
+        return None
+
+    if not np.all(matrix == matrix.T):
         return None
 
     eigenvalues = np.linalg.eigvals(matrix)
