@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
+"""
+This module contains a function that calculates the determinant of a matrix.
+"""
+
+
 def determinant(matrix):
     """Calculates the determinant of a matrix."""
-    if type(matrix) is not list or not all(type(row) is list for row in matrix):
+    if not isinstance(matrix, list) or \
+            not all(isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
     
     if len(matrix) == 0:
@@ -11,6 +17,8 @@ def determinant(matrix):
         raise ValueError("matrix must be a square matrix")
     
     if len(matrix) == 1:
+        if len(matrix[0]) == 0:
+            return 1
         return matrix[0][0]
     
     if len(matrix) == 2:
@@ -23,6 +31,7 @@ def determinant(matrix):
         det += cofactor * determinant(minor)
     
     return det
+
 
 if __name__ == '__main__':
     mat0 = [[]]
