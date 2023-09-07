@@ -24,7 +24,7 @@ def determinant(matrix):
 
     det = 0
     for i in range(len(matrix)):
-        minor = [row[:i] + row[i+1:] for row in matrix[1:]]
+        minor = [row[:i] + row[i + 1:] for row in matrix[1:]]
         cofactor = (-1) ** i * matrix[0][i]
         det += cofactor * determinant(minor)
 
@@ -119,6 +119,7 @@ def inverse(matrix):
         return None
 
     adj = adjugate(matrix)
-    inv_matrix = [[adj[i][j] / det for j in range(len(adj[i]))] for i in range(len(adj))]
+    inv_matrix = [
+        [adj[i][j] / det for j in range(len(adj[i]))] for i in range(len(adj))]
 
     return inv_matrix
