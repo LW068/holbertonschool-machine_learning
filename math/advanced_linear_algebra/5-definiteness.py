@@ -10,7 +10,7 @@ def definiteness(matrix):
 
     Args:
         matrix (numpy.ndarray): The matrix to check.
-    
+
     Returns:
         str: The type of definiteness or None.
     """
