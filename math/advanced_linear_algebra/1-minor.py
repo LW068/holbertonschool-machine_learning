@@ -28,10 +28,10 @@ def minor(matrix):
     
     if len(matrix) == 0 or len(matrix) != len(matrix[0]):
         raise ValueError("matrix must be a non-empty square matrix")
-    
+
     if len(matrix) == 1:
         return [[1]]
-    
+
     minor_matrix = []
     for i in range(len(matrix)):
         minor_row = []
@@ -40,5 +40,5 @@ def minor(matrix):
             minor_value = determinant(sub_matrix)
             minor_row.append(minor_value)
         minor_matrix.append(minor_row)
-    
+
     return minor_matrix
