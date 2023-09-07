@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-This module contains functions that calculate the minor matrix and determinant of a matrix.
+This module contains functions for minor matrix and determinant calculations.
 """
 
 def determinant(matrix):
     """
-    Calculates the determinant of a matrix.
+    Calculates the determinant.
     """
     if len(matrix) == 1:
         return matrix[0][0]
@@ -21,17 +21,17 @@ def determinant(matrix):
 
 def minor(matrix):
     """
-    Calculates the minor matrix of a matrix.
+    Calculates the minor matrix.
     """
     if not isinstance(matrix, list) or not all(isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
-
+    
     if len(matrix) == 0 or len(matrix) != len(matrix[0]):
         raise ValueError("matrix must be a non-empty square matrix")
-
+    
     if len(matrix) == 1:
         return [[1]]
-
+    
     minor_matrix = []
     for i in range(len(matrix)):
         minor_row = []
@@ -40,5 +40,5 @@ def minor(matrix):
             minor_value = determinant(sub_matrix)
             minor_row.append(minor_value)
         minor_matrix.append(minor_row)
-
+    
     return minor_matrix
