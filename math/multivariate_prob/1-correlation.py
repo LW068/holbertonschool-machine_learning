@@ -17,8 +17,8 @@ def correlation(C):
     if not isinstance(C, np.ndarray):
         raise TypeError("C must be a numpy.ndarray")
 
-    d, d_check = C.shape
-    if d != d_check:
+    shape = C.shape
+    if len(shape) != 2 or shape[0] != shape[1]:
         raise ValueError("C must be a 2D square matrix")
 
     # Calculate the standard deviations for each dimension
