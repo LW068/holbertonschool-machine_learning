@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Module to calculate the correlation matrix from a given covariance matrix."""
+"""Module to calculate the correlation...
+...matrix from a given covariance matrix."""
 
 import numpy as np
 
