@@ -16,7 +16,8 @@ class MultiNormal:
 
         Sets the public instance variables:
         - mean (numpy.ndarray of shape (d, 1)): The mean of the data set.
-        - cov (numpy.ndarray of shape (d, d)): The covariance matrix of the data set.
+        - cov (numpy.ndarray of shape (d, d)):...
+        ...The covariance matrix of the data set.
         """
         if not isinstance(data, np.ndarray) or len(data.shape) != 2:
             raise TypeError("data must be a 2D numpy.ndarray")
