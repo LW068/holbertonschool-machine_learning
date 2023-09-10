@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Module for calculating the intersection 
+"""Module for calculating the intersection
 of Bayesian probabilities."""
 
 
