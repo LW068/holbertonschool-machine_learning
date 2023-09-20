@@ -16,7 +16,8 @@ def pca(X, var=0.95):
     sorted_eigenvalues = eigenvalues[sorted_indices]
     sorted_eigenvectors = eigenvectors[:, sorted_indices]
 
-    # clalculating the cumulative sum of eigenvalues to maintain the given variance
+    # clalculating the cumulative sum of eigenvalues...
+    # ...to maintain the given variance
     cumul_eigenvalues = np.cumsum(sorted_eigenvalues)
     total_eigenvalues = np.sum(sorted_eigenvalues)
     threshold_value = total_eigenvalues * var
