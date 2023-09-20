@@ -7,4 +7,7 @@ def pca(X, var=0.95):
   # calculatign the covariance matrix
     cov_matrix = np.cov(X, rowvar=False)
 
+# performign eigendecomposition
+    eigenvalues, eigenvectors = np.linalg.eig(cov_matrix)
+
 return np.array([])
