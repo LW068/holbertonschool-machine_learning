@@ -2,7 +2,6 @@
 """PCA on a dataset"""
 import numpy as np
 
-
 def pca(X, var=0.95):
     """PCA on a dataset"""
     # calculatign the covariance matrix
@@ -11,7 +10,7 @@ def pca(X, var=0.95):
     # performign eigendecomposition
     eigenvalues, eigenvectors = np.linalg.eig(cov_matrix)
 
-    # sorting the eigenvalues and the corresponding eigenvectors
+    # sorting the  eigenvalues and the corresponding eigenvectors
     sorted_indices = np.argsort(eigenvalues)[::-1]
     sorted_eigenvalues = eigenvalues[sorted_indices]
     sorted_eigenvectors = eigenvectors[:, sorted_indices]
@@ -20,11 +19,11 @@ def pca(X, var=0.95):
     cumul_eigenvalues = np.cumsum(sorted_eigenvalues)
     total_eigenvalues = np.sum(sorted_eigenvalues)
     threshold_value = total_eigenvalues * var
-
+    
     # finding the number of principal components needed
     num_components = np.argmax(cumul_eigenvalues >= threshold_value) + 1
-
+    
     # constructed the weights matrix "W"
     W = sorted_eigenvectors[:, :num_components]
-
-return W
+    
+    return W
