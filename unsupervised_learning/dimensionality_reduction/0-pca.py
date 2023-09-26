@@ -24,9 +24,13 @@ def pca(X, var=0.95):
 
     # finding the number of principal components needed
     num_components = np.argmax(cumul_eigenvalues >= threshold_value) + 1
-    print("Number of components:", num_components)  # debug line
 
     # constructed the weights matrix "W"
     W = sorted_eigenvectors[:, :num_components]
+
+    # adjusting the sign of eigenvectosr
+    max_abs_cols = np.argmax(np.abs(W), axis=0)
+    signs = np.sign(W[max_abs_cols, range(W.shape[1])])
+    W *= signs
 
     return W
