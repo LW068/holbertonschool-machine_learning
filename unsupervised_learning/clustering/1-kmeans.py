@@ -27,7 +27,7 @@ def kmeans(X, k, iterations=1000, tol=1e-5):
         # update centroids
         new_C = np.array([np.mean(X[clss == j], axis=0) for j in range(k)])
 
-        # check for empty clusters and reinitialize
+        # check f0r empty clusters and reinitialize
         empty_clusters = np.isnan(new_C).any(axis=1)
         new_C[empty_clusters] = np.random.uniform(min_vals, max_vals, (empty_clusters.sum(), d))
 
