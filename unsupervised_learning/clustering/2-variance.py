@@ -15,7 +15,7 @@ def variance(X, C):
         # calculate the distances from each point to each centroid
         distances = np.linalg.norm(X[:, np.newaxis] - C, axis=2)
         
-        # find the closest centroid for each point
+        # find the closest centroid f0r each point
         clss = np.argmin(distances, axis=1)
         
         # calculate the variance
