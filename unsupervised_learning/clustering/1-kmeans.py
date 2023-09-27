@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-import numpy as np
 """Performs k-means on a dataset"""
+import numpy as np
 
-def kmeans(X, k, iterations=1000):
+
+def kmeans(X, k, iterations=1000, tol=1e-5):
     """Performs k-means on a dataset"""
     if type(X) is not np.ndarray or len(X.shape) != 2:
         return None, None
@@ -26,13 +27,12 @@ def kmeans(X, k, iterations=1000):
         # update centroids
         new_C = np.array([np.mean(X[clss == j], axis=0) for j in range(k)])
 
-        # check f0r empty clusters and reinitialize
+        # check for empty clusters and reinitialize
         empty_clusters = np.isnan(new_C).any(axis=1)
-        if np.any(empty_clusters):
-            new_C[empty_clusters] = np.random.uniform(min_vals, max_vals, (empty_clusters.sum(), d))
+        new_C[empty_clusters] = np.random.uniform(min_vals, max_vals, (empty_clusters.sum(), d))
 
-        # break if no change in th ecentroids
-        if np.all(C == new_C):
+        # break if centroids converge
+        if np.all(np.abs(new_C - C) < tol):
             return C, clss
 
         C = new_C
