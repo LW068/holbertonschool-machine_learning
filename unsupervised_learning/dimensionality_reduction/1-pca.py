@@ -2,10 +2,11 @@
 """PCA on a dataset"""
 import numpy as np
 
+
 def pca(X, ndim):
     """Perform PCA on a dataset to reduce it to ndim dimensions."""
     # cnter the dataset
-    X_centered = X - np.mean(X, axis=0) # is centers the dataset by
+    X_centered = X - np.mean(X, axis=0)  # is centers the dataset by
     # subtracting th mean of each feature.
 
     # calculate the covarance matrix
