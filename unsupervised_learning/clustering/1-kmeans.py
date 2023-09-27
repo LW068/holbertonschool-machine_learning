@@ -2,7 +2,6 @@
 import numpy as np
 """Performs k-means on a dataset"""
 
-
 def kmeans(X, k, iterations=1000):
     """Performs k-means on a dataset"""
     if type(X) is not np.ndarray or len(X.shape) != 2:
@@ -31,7 +30,6 @@ def kmeans(X, k, iterations=1000):
         empty_clusters = np.isnan(new_C).any(axis=1)
         if np.any(empty_clusters):
             new_C[empty_clusters] = np.random.uniform(min_vals, max_vals, (empty_clusters.sum(), d))
-
 
         # break if no change in th ecentroids
         if np.all(C == new_C):
