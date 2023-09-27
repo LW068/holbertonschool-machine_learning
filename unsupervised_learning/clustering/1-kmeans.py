@@ -23,12 +23,11 @@ def kmeans(X, k, iterations=1000):
         clss = np.argmin(distances, axis=1)
 
         # update centroids
-        new_C = np.array([X[clss == j].mean(axis=0) for j in range(k)])
+        new_C = np.array([np.mean(X[clss == j], axis=0) for j in range(k)])
 
         # check f0r empty clusters and reinitialize
-        for j in range(k):
-            if np.isnan(new_C[j]).all():
-                new_C[j] = np.random.uniform(min_vals, max_vals)
+        empty_clusters = np.isnan(new_C).any(axis=1)
+        new_C[empty_clusters] = np.random.uniform(min_vals, max_vals, (empty_clusters.sum(), d))
 
         # break if no change in th ecentroids
         if np.all(C == new_C):
