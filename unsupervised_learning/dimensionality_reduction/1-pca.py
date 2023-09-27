@@ -19,12 +19,13 @@ def pca(X, ndim):
     sorted_indices = np.argsort(eigenvalues)[::-1]
     sorted_eigenvectors = eigenvectors[:, sorted_indices]
 
-    # flip the sign of the eigenvectors to match expected output (might fix error)
+    # flip the sign of the eigenvectors to match expected
+    # output (might fix error)
     max_abs_cols = np.argmax(np.abs(sorted_eigenvectors), axis=0)
     signs = np.sign(sorted_eigenvectors[max_abs_cols,
                     range(sorted_eigenvectors.shape[1])])
     sorted_eigenvectors *= signs
-    
+
     # select the first ndim eigenvectors
     W = sorted_eigenvectors[:, :ndim]
 
