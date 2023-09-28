@@ -6,9 +6,9 @@ import numpy as np
 def optimum_k(X, kmin=1, kmax=None, iterations=1000):
     """fucntion that tests for the optimum number of clusters"""
     if kmax is None:
-          kmax = len(X)
+        kmax = len(X)
 
-    # imports the required functions
+    # imp0rts the required functions
     kmeans = __import__('1-kmeans').kmeans  # still wrong but we'll see...
     variance = __import__('2-variance').variance
 
