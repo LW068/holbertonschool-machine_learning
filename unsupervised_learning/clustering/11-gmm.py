@@ -2,6 +2,7 @@
 """placeholder for now"""
 import sklearn.mixture
 
+
 def gmm(X, k):
     """placeholder for now"""
     gmm_model = sklearn.mixture.GaussianMixture(n_components=k).fit(X)
@@ -10,5 +11,5 @@ def gmm(X, k):
     S = gmm_model.covariances_
     clss = gmm_model.predict(X)
     bic = gmm_model.bic(X)
-    
+
     return pi, m, S, clss, bic
