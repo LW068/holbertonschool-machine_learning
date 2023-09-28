@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """K-MEANS CLUSTERING (for now this)"""
-import sklearn.cluster
-import numpy as np
+from sklearn.cluster import KMeans
 
 
 def kmeans(X, k):
