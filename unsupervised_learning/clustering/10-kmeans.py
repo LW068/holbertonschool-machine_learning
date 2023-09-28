@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """K-MEANS CLUSTERING (for now this)"""
-from sklearn.cluster import KMeans
+import sklearn.cluster
 
 
 def kmeans(X, k):
-    model = sklearn.cluster.KMeans(n_clusters=k)
-    model.fit(X)
-    C = model.cluster_centers_
-    clss = model.labels_
-    return C, clss
+    """K-MEANS CLUSTERING (for now this)"""
+    kmeans_model = sklearn.cluster.KMeans(n_clusters=k).fit(X)
+    C = kmeans_model.cluster_centers_
+    labels = kmeans_model.labels_
+    return C, labels
