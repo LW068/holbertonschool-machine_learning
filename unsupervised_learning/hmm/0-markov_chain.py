@@ -13,7 +13,7 @@ def markov_chain(P, s, t=1):  # Function definition with default argument for t
         return None
     try:
         for _ in range(t):  # loop t times
-            s = np.dot(s, P)  # multiply state vector s with transition matrix P
+            s = np.dot(s, P)  # multiply state vector s withtransition matrix P
         return s  # return the final state vector
     except Exception:  # catch any exception that occurs
         return None
