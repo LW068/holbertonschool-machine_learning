@@ -5,6 +5,7 @@ import numpy as np
 
 
 def viterbi(Observation, Emission, Transition, Initial):
+    """ calculates the most likely sequence of hidden states for a hmm """
     N = Emission.shape[0]
     T = Observation.shape[0]
 
