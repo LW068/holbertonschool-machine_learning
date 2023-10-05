@@ -6,10 +6,19 @@ import numpy as np
 
 def regular(P):
     """ 
-    Function to determine the steady state probabilities of a regular markov chain 
+    Function to determine the steady state probabilities
+    of a regular markov chain 
     """
+    n = P.shape[0]
+    for k in range(1, n + 1):
+        Pt = np.linalg.matrix_power(P, k)
+        if (Pt > 0).all():
+            break
+    else:
+        return None  # return None if P is not regular
+
     try:
-        # clculate eigenvalues and eigenvectors
+        # calculate eigenvalues and eigenvectors
         w, v = np.linalg.eig(np.transpose(P))
         # get the index of eigenvalue 1
         idx = np.argmin(np.abs(w - 1))
