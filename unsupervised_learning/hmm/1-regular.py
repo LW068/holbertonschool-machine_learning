@@ -5,9 +5,9 @@ import numpy as np
 
 
 def regular(P):
-    """ 
+    """
     Function to determine the steady state probabilities
-    of a regular markov chain 
+    of a regular markov chain
     """
     n = P.shape[0]
     for k in range(1, n + 1):
