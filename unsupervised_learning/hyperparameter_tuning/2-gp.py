@@ -33,3 +33,9 @@ class GaussianProcess:
         sigma_s = np.diag(sigma_s)
 
         return mu_s, sigma_s
+    
+    def update(self, X_new, Y_new):
+        """ Updates a Gaussian Process """
+        self.X = np.append(self.X, X_new[:, np.newaxis], axis=0)
+        self.Y = np.append(self.Y, Y_new[:, np.newaxis], axis=0)
+        self.K = self.kernel(self.X, self.X)
