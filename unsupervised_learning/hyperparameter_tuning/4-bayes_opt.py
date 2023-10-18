@@ -18,10 +18,13 @@ class BayesianOptimization:
     def acquisition(self):
         """calculates the next best sample location using
         the Expected Improvement acquisition function"""
+        from scipy.stats import norm
+
         mu, sigma = self.gp.predict(self.X_s)
         with np.errstate(divide='warn'):
             Z = (mu - self.gp.Y.max() - self.xsi) / sigma
-            EI = (mu - self.gp.Y.max() - self.xsi) * norm.cdf(Z) + sigma * norm.pdf(Z)
+            EI = ((mu - self.gp.Y.max() - self.xsi) * norm.cdf(Z)
+                  + sigma * norm.pdf(Z))
             EI[sigma == 0.0] = 0.0
-        
+
         return self.X_s[np.argmax(EI)], EI
