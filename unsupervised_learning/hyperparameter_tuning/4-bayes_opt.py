@@ -22,10 +22,13 @@ class BayesianOptimization:
 
         mu, sigma = self.gp.predict(self.X_s)
         with np.errstate(divide='warn'):
-            Z = ((mu - self.gp.Y.max() - self.xsi) /
-                 sigma)
-            EI = ((mu - self.gp.Y.max() - self.xsi) * norm.cdf(Z) +
-                  sigma * norm.pdf(Z))
-            EI[sigma == 0.0] = 0.0
+            Z = (
+                (mu - self.gp.Y.max() - self.xsi) /
+                sigma
+            )
+            EI = (
+                (mu - self.gp.Y.max() - self.xsi) * norm.cdf(Z) +
+                sigma * norm.pdf(Z)
+            )
 
         return self.X_s[np.argmax(EI)], EI
