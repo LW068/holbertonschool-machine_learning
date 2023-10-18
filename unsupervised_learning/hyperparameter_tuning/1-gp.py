@@ -28,7 +28,7 @@ class GaussianProcess:
 
         mu_s = K_s.T.dot(K_inv).dot(self.Y)
         mu_s = mu_s.reshape((mu_s.shape[0],))
- 
+
         sigma_s = K_ss - K_s.T.dot(K_inv).dot(K_s)
         sigma_s = np.diag(sigma_s)
 
