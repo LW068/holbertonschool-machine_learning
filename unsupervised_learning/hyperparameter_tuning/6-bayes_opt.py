@@ -37,7 +37,7 @@ optimal_params = opt.x_opt
 optimal_value = -opt.fx_opt  # Convert back to positive for accuracy
 
 # saves the optimal hyperparameters to a checkpoint file
-checkpoint_filename = f'optimal_params_C_{optimal_params[0]}_gamma_{optimal_params[1]}.pkl'
+checkpoint_filename = 'optimal_params_C_{}_gamma_{}.pkl'.format(optimal_params[0], optimal_params[1])
 with open(checkpoint_filename, 'wb') as file:
     pickle.dump(optimal_params, file)
 
