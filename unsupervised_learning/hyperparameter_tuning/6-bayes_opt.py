@@ -41,16 +41,16 @@ checkpoint_filename = 'optimal_params_C_{}_gamma_{}.pkl'.format(optimal_params[0
 with open(checkpoint_filename, 'wb') as file:
     pickle.dump(optimal_params, file)
 
-# printss the optimal hyperparameters and value
+# prints the optimal hyperparameters and value
 print('Optimal Hyperparameters:')
-print(f'C: {optimal_params[0]}, gamma: {optimal_params[1]}')
-print(f'Optimal Value (Accuracy): {optimal_value:.4f}')
+print('C: {}, gamma: {}'.format(optimal_params[0], optimal_params[1]))
+print('Optimal Value (Accuracy): {:.4f}'.format(optimal_value))
 
 # saves a report of the optimization
 report_filename = 'bayes_opt.txt'
 with open(report_filename, 'w') as report_file:
-    report_file.write(f'Optimal Hyperparameters: C={optimal_params[0]}, gamma={optimal_params[1]}\n')
-    report_file.write(f'Optimal Value (Accuracy): {optimal_value:.4f}\n')
+    report_file.write('Optimal Hyperparameters: C={}, gamma={}\n'.format(optimal_params[0], optimal_params[1]))
+    report_file.write('Optimal Value (Accuracy): {:.4f}\n'.format(optimal_value))
 
 # lpots the convergence
 opt.plot_convergence()
