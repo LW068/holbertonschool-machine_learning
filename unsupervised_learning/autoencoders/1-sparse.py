@@ -2,7 +2,6 @@
 """ creates a sparse autoencoder """
 
 import tensorflow.keras as keras
-from tensorflow.keras import regularizers
 
 
 def autoencoder(input_dims, hidden_layers, latent_dims, lambtha):
@@ -14,7 +13,7 @@ def autoencoder(input_dims, hidden_layers, latent_dims, lambtha):
     for units in hidden_layers:
         x = keras.layers.Dense(units, activation='relu')(x)
     latent = keras.layers.Dense(latent_dims, activation='relu',
-                                activity_regularizer=regularizers.l1(lambtha))(x)
+                                activity_regularizer=keras.regularizers.l1(lambtha))(x)
     encoder = keras.Model(encoder_input, latent)
 
     # decodeer
