@@ -51,7 +51,7 @@ class LSTMCell:
         o = self.sigmoid(np.dot(combined, self.Wo.T) + self.bo)
 
         # next hidden state
-        h_next = ot * np.tanh(c_next)
+        h_next = o * np.tanh(c_next)
 
         # output (with softmax activation)
         y = self.softmax(np.dot(h_next, self.Wy.T) + self.by)
