@@ -27,5 +27,5 @@ class BidirectionalCell:
         whf_dot_plus_bias = whf_dot + self.bhf
 
         # aplying the tanh activation function to get the next hidden state
-        h_next = np.tanh(whf_dot_plus_bias)        
+        h_next = np.tanh(whf_dot_plus_bias)
         return h_next
