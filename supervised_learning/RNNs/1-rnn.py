@@ -32,6 +32,7 @@ class RNNCell:
         y = self.softmax(y_raw)
         return h_next, y
 
+
 def rnn(rnn_cell, X, h_0):
     """ performs forward propagation for a simple RNN """
     t, m, i = X.shape
