@@ -39,7 +39,7 @@ class RNNCell:
     """ represents a single RNN cell"""
 
     def __init__(self, i, h, o):
-        """initializign the RNN cell with input, hidden, and output dimensions """
+        """initializign the RNN cell """
         self.Wx = np.random.randn(h, i)
         self.Wh = np.random.randn(h, h)
         self.Wy = np.random.randn(o, h)
@@ -48,7 +48,8 @@ class RNNCell:
 
     def forward(self, h_prev, x_t):
         """ perform forward propagation for one time step """
-        h_next = np.tanh(np.dot(self.Wx, x_t.T) + np.dot(self.Wh, h_prev.T) + self.bh.T).T
+        h_int = np.dot(self.Wx, x_t.T) + np.dot(self.Wh, h_prev.T) + self.bh.T
+        h_next = np.tanh(h_int).T
         y = self.softmax(np.dot(h_next, self.Wy.T) + self.by)
         return h_next, y
 
