@@ -15,6 +15,17 @@ class BidirectionalCell:
         self.by = np.zeros((1, o))            # bais for outputs
 
     def forward(self, h_prev, x_t):
-        """ alculates the hidden state in the forward direction for one time step"""
-        h_next = np.tanh(np.dot(np.hstack((h_prev, x_t)), self.Whf.T) + self.bhf)
+        """ alculates the hidden state in the
+        forward direction for one time step """
+        # concatenating the previous hidden state and the current input
+        concat_h_x = np.hstack((h_prev, x_t))
+
+        # computing the dot product with the weight transpose
+        whf_dot = np.dot(concat_h_x, self.Whf.T)
+
+        # adding the bias term
+        whf_dot_plus_bias = whf_dot + self.bhf
+
+        # aplying the tanh activation function to get the next hidden state
+        h_next = np.tanh(whf_dot_plus_bias)        
         return h_next
