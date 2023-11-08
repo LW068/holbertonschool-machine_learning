@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Deep RNN! """
 import numpy as np
-
+from 4-deep_rnn import DeepRNN
 
 class DeepRNN:
     """ represents a deep RNN network """
