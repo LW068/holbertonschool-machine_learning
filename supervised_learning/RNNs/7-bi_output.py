@@ -38,7 +38,7 @@ class BidirectionalCell:
 
         return h_prev
 
-      def output(self, H):
+    def output(self, H):
         """calculates  all outputs for the RNN """
         T = H.shape[0]
         Y = []
