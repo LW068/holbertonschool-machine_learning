@@ -20,6 +20,10 @@ class BidirectionalCell:
         # concatenating the previous hidden state and the current input
         concat_h_x = np.concatenate((h_prev, x_t), axis=1)
 
+        # debugging
+        print(f"concat_h_x shape: {concat_h_x.shape}")
+        print(f"self.Whf shape: {self.Whf.shape}")
+        
         # aplying the tanh activation function to get the next hidden state
         h_next = np.tanh(np.dot(concat_h_x, self.Whf) + self.bhf)
         return h_next
