@@ -40,20 +40,13 @@ class BidirectionalCell:
 
     def output(self, H):
         """calculates  all outputs for the RNN """
-        T = H.shape[0]
-        Y = []
-
-        for t in range(T):
-            y_t = np.dot(H[t], self.Wy) + self.by
-            Y.append(y_t)
-
-        Y = np.array(Y)
-        Y = np.apply_along_axis(self.softmax, 1, Y)
+        Y_linear = np.dot(H, self.Wy) + self.by
+        Y = self.softmax(Y_linear)
 
         return Y
 
     @staticmethod
     def softmax(x):
         """computes the softmax values for each set of scores in x"""
-        e_x = np.exp(x - np.max(x, axis=1, keepdims=True))
-        return e_x / e_x.sum(axis=1, keepdims=True)
+        e_x = np.exp(x - np.max(x, axis=-1, keepdims=True))
+        return e_x / e_x.sum(axis=-1, keepdims=True)
