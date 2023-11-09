@@ -7,8 +7,8 @@ class BidirectionalCell:
     """ Bidirectional cell class for an RNN """
     def __init__(self, i, h, o):
         """ initializes a bidirectional cell"""
-        self.Whf = np.random.randn(h, i + h)  # weight for forw direction
-        self.Whb = np.random.randn(h, i + h)  # weight for back direction
+        self.Whf = np.random.randn(i + h, h)  # weight for forw direction
+        self.Whb = np.random.randn(i + h, h)  # weight for back direction
         self.Wy = np.random.randn(2 * h, o)   # weight for outputs
         self.bhf = np.zeros((1, h))           # bias for forw direction
         self.bhb = np.zeros((1, h))           # bias for back direction
