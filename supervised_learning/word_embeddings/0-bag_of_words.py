@@ -16,7 +16,7 @@ def bag_of_words(sentences, vocab=None):
         vocab = sorted(words_set)
 
     vocab_dict = {word: i for i, word in enumerate(vocab)}
-    embeddings = np.zeros((len(sentences), len(vocab)) dtype=int)
+    embeddings = np.zeros((len(sentences), len(vocab)), dtype=int)
 
     for i, sentence in enumerate(sentences):
         for word in re.findall(r'\b\w+\b', sentence.lower()):
