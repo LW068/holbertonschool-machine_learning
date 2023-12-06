@@ -6,6 +6,7 @@
 import math
 from collections import Counter
 
+
 def uni_bleu(references, sentence):
     """
     calculates the unigram BLEU score for a sentence
@@ -15,9 +16,14 @@ def uni_bleu(references, sentence):
 
     for ref in references:
         for word in ref:
-            max_ref_word_counts[word] = max(max_ref_word_counts.get(word, 0), ref.count(word))
+            max_count = max_ref_word_counts.get(word, 0)
+            ref_count = ref.count(word)
+            max_ref_word_counts[word] = max(max_count, ref_count)
 
-    clipped_counts = sum(min(word_counts[word], max_ref_word_counts.get(word, 0)) for word in word_counts)
+    clipped_counts = sum(
+        min(word_counts[word], max_ref_word_counts.get(word, 0))
+        for word in word_counts
+    )
 
     sentence_len = len(sentence)
     ref_lens = [len(ref) for ref in references]
@@ -27,10 +33,3 @@ def uni_bleu(references, sentence):
     bleu_score = brevity_pen * (clipped_counts / sentence_len)
 
     return bleu_score
-
-# testing the function
-if __name__ == '__main__':
-    references = [["the", "cat", "is", "on", "the", "mat"], ["there", "is", "a", "cat", "on", "the", "mat"]]
-    sentence = ["there", "is", "a", "cat", "here"]
-
-    print(uni_bleu(references, sentence))
