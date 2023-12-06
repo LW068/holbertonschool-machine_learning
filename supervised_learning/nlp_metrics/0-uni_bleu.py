@@ -27,8 +27,11 @@ def uni_bleu(references, sentence):
 
     sentence_len = len(sentence)
     ref_lens = [len(ref) for ref in references]
-    closest_ref_len = min(ref_lens, key=lambda ref_len: abs(ref_len - sentence_len))
-    brevity_pen = math.exp(1 - closest_ref_len / sentence_len) if sentence_len < closest_ref_len else 1
+    closest_ref_len = min(ref_lens, 
+                          key=lambda ref_len: abs(ref_len - sentence_len))
+
+    brevity_pen = (math.exp(1 - closest_ref_len / sentence_len) 
+                   if sentence_len < closest_ref_len else 1)
 
     bleu_score = brevity_pen * (clipped_counts / sentence_len)
 
