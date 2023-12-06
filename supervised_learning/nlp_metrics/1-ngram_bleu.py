@@ -16,9 +16,7 @@ def get_ngrams(sequence: List[str], n: int) -> List[Tuple[str, ...]]:
     return [tuple(sequence[i:i + n]) for i in range(len(sequence) - n + 1)]
 
 
-def ngram_bleu(
-        references: List[List[str]], sentence: List[str], n: int
-    ) -> float:
+def ngram_bleu(references, sentence, n):
     """
     This emthod calculates the n-gram BLEU score for a sentence.
     """
@@ -40,8 +38,10 @@ def ngram_bleu(
 
     precision = clipped_total / total if total > 0 else 0
 
-    ref_lens = [len(ref) for ref in references]
-    closest_ref_len = get_closest_ref_length(ref_lens, len(sentence))
+    def length_difference(ref_len):
+        return abs(ref_len - len(sentence))
+
+    closest_ref_len = min(ref_lens, key=length_difference)
 
     is_brevity = len(sentence) < closest_ref_len
     brevity_factor = 1 - closest_ref_len / len(sentence)
