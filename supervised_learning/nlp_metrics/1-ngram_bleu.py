@@ -9,7 +9,9 @@ from typing import List, Tuple
 
 
 def get_ngrams(sequence: List[str], n: int) -> List[Tuple[str, ...]]:
-    """extracts n-grams from a sequence of items."""
+    """
+    this method extracts n-grams from a sequence of items
+    """
 
     return [tuple(sequence[i:i + n]) for i in range(len(sequence) - n + 1)]
 
@@ -19,8 +21,9 @@ def ngram_bleu(
         sentence: List[str],
         n: int
     ) -> float:
-    """calculates the n-gram BLEU score for a sentence."""
-
+    """
+    this emthod calculates the n-gram BLEU score for a sentence
+    """
     sentence_ngrams = get_ngrams(sentence, n)
     ref_ngrams = [get_ngrams(ref, n) for ref in references]
 
@@ -40,8 +43,7 @@ def ngram_bleu(
     precision = clipped_total / total if total > 0 else 0
 
     ref_lens = [len(ref) for ref in references]
-    closest_len_diff = lambda ref_len: abs(ref_len - len(sentence))
-    closest_ref_len = min(ref_lens, key=closest_len_diff)
+    closest_ref_len = get_closest_ref_length(ref_lens, len(sentence))
     
     is_brevity = len(sentence) < closest_ref_len
     brevity_factor = 1 - closest_ref_len / len(sentence)
@@ -49,3 +51,8 @@ def ngram_bleu(
     bleu_score = brevity_pen * precision
 
     return bleu_score
+
+
+def get_closest_ref_length(ref_lens, sentence_length):
+    """finds the length of the closest reference translation"""
+    return min(ref_lens, key=lambda ref_len: abs(ref_len - sentence_length))
