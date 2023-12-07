@@ -3,56 +3,28 @@
 1-ngram_bleu.py - module that calculates the n-gram BLEU score for a sentence
 """
 
-import math
+import numpy as np
 from collections import Counter
-from typing import List, Tuple
-
-
-def get_ngrams(sequence: List[str], n: int) -> List[Tuple[str, ...]]:
-    """
-    This method extracts n-grams from a sequence of items.
-    """
-
-    return [tuple(sequence[i:i + n]) for i in range(len(sequence) - n + 1)]
 
 
 def ngram_bleu(references, sentence, n):
     """
     This emthod calculates the n-gram BLEU score for a sentence.
     """
-    sentence_ngrams = get_ngrams(sentence, n)
-    ref_ngrams = [get_ngrams(ref, n) for ref in references]
-
-    sentence_counts = Counter(sentence_ngrams)
-    max_ref_counts = Counter()
-
-    for ref in ref_ngrams:
-        max_ref_counts |= Counter(ref)
+    c_ngrams = Counter(zip(*[sentence[i:] for i in range(n)]))
+    r_n = [Counter(zip(*[ref[i:] for i in range(n)])) for ref in references]
 
     clipped_counts = {}
-    for word, count in sentence_counts.items():
-        clipped_counts[word] = min(count, max_ref_counts[word])
+    for ngram in c_ngrams:
+        max_count = max(r_ngram[ngram] for r_ngram in r_ngrams)
+        clipped_counts[ngram] = min(c_ngrams[ngram], max_count)
 
-    clipped_total = sum(clipped_counts.values())
-    total = len(sentence_ngrams)
+    precision = sum(clipped_counts.values()) / max(1, sum(c_ngrams.values()))
 
-    precision = clipped_total / total if total > 0 else 0
+    crlen = min(len(ref) for ref in references)
 
-    def length_difference(ref_len):
-        return abs(ref_len - len(sentence))
+    b_pen = np.exp(1 - (crlen / len(sentence))) if len(sentence) < crlen else 1
 
-    closest_ref_len = min(ref_lens, key=length_difference)
-
-    is_brevity = len(sentence) < closest_ref_len
-    brevity_factor = 1 - closest_ref_len / len(sentence)
-    brevity_pen = math.exp(brevity_factor) if is_brevity else 1
-    bleu_score = brevity_pen * precision
+    bleu_score = b_pen * precision
 
     return bleu_score
-
-
-def get_closest_ref_length(ref_lens, sentence_length):
-    """
-    Finds the length of the closest reference translation.
-    """
-    return min(ref_lens, key=lambda ref_len: abs(ref_len - sentence_length))
